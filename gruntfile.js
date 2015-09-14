@@ -28,12 +28,6 @@ module.exports = function (grunt) {
             },
             target: files
         },
-        jshint: {
-            options: {
-                jshintrc: true
-            },
-            src: files
-        },
         contributors: {
             options: {
                 commitMessage: 'update contributors'
@@ -51,7 +45,6 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['build'])
     grunt.registerTask('build', 'Build wdio-mocha', function () {
         grunt.task.run([
-            'jshint',
             'eslint',
             'clean',
             'babel'
