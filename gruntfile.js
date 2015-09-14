@@ -13,10 +13,13 @@ module.exports = function (grunt) {
                 sourceMap: false
             },
             dist: {
-                files: {
-                    'build/index.js': 'lib/adapter.js',
-                    'build/reporter.js': 'lib/reporter.js'
-                }
+                files: [{
+                    expand: true,
+                    cwd: './lib',
+                    src: ['**/*'],
+                    dest: 'build',
+                    ext: '.js'
+                }]
             }
         },
         eslint: {
