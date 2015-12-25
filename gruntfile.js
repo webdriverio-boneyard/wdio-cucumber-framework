@@ -1,16 +1,13 @@
 module.exports = function (grunt) {
-    var files = [
-        'gruntfile.js',
-        'lib/*.js',
-        'test/**/*.js'
-    ]
+    grunt.loadNpmTasks('grunt-env')
 
     grunt.initConfig({
         pkgFile: 'package.json',
         clean: ['build'],
         babel: {
             options: {
-                sourceMap: false
+                sourceMap: false,
+                optional: ['runtime']
             },
             dist: {
                 files: [{
@@ -22,11 +19,22 @@ module.exports = function (grunt) {
                 }]
             }
         },
+        mocha_istanbul: {
+            coverage: {
+                src: ['test/*.spec.js'],
+                options: {
+                    scriptPath: require.resolve('isparta/bin/isparta'),
+                    reporter: 'spec',
+                    mochaOptions: ['--compilers', 'js:babel/register', '--recursive', '-t', '60000'],
+                    require: ['should']
+                }
+            }
+        },
         eslint: {
             options: {
                 parser: 'babel-eslint'
             },
-            target: files
+            target: ['gruntfile.js', 'lib/*.js', 'test/**/*.js']
         },
         contributors: {
             options: {
@@ -38,14 +46,24 @@ module.exports = function (grunt) {
                 commitMessage: 'v%VERSION%',
                 pushTo: 'upstream'
             }
+        },
+        watch: {
+            dist: {
+                files: './lib/**/*.js',
+                tasks: ['babel:dist']
+            }
+        },
+        env: {
+            test: {
+                BABEL_ENV: 'test'
+            }
         }
     })
 
     require('load-grunt-tasks')(grunt)
-    grunt.registerTask('default', ['build'])
-    grunt.registerTask('build', 'Build wdio-mocha', function () {
+    grunt.registerTask('default', ['eslint', 'build', 'env:test', 'mocha_istanbul'])
+    grunt.registerTask('build', 'Build wdio-mocha-framework', function () {
         grunt.task.run([
-            'eslint',
             'clean',
             'babel'
         ])
