@@ -45,86 +45,86 @@ module.exports = {
 Show full backtrace for errors.
 
 Type: `Boolean`<br>
-Default: false
+Default: `false`
 
 ### compiler
 Require files with the given EXTENSION after requiring MODULE.
 
 Type: `String[]`<br>
-Default: *[]*<br>
-Example: ['js:babel-core/register']
+Default: `*[]*<br>`
+Example: `['js:babel-core/register']`
 
 ### dryRun
 Invoke formatters without executing steps.
 
 Type: `Boolean`<br>
-Default: false
+Default: `false`
 
 ### failFast
 Abort the run on first failure.
 
 Type: `Boolean`<br>
-Default: false
+Default: `false`
 
 ### format
 Specify the output format, optionally supply PATH to redirect formatter output (repeatable).
 
 Type: `String[]`<br>
-Default: ['pretty']
+Default: `['pretty']`
 
 ### colors
 If false it disables colors in formatter output.
 
 Type: `Boolean`<br>
-Default: true
+Default: `true`
 
 ### snippets
 Hide step definition snippets for pending steps.
 
 Type: `Boolean`<br>
-Default: true
+Default: `true`
 
 ### source
 Hide source uris.
 
 Type: `Boolean`<br>
-Default: true
+Default: `true`
 
 ### profile
 Specify the profile to use.
 
 Type: `String[]`<br>
-Default: []
+Default: `[]`
 
 ### profile
 Require files/dir before executing features.
 
 Type: `String[]`<br>
-Default: []
+Default: `[]`
 
 ### snippetSyntax
 Specify a custom snippet syntax.
 
 Type: `String`<br>
-Default: undefined
+Default: `undefined`
 
 ### strict
 Fail if there are any undefined or pending steps
 
 Type: `Boolean`<br>
-Default: false
+Default: `false`
 
 ### tags
 Only execute the features or scenarios with tags matching the expression.
 
 Type: `String[]`<br>
-Default: []
+Default: `[]`
 
 ### timeout
 Timeout for step definitions.
 
 Type: `Number`<br>
-Default: 10000
+Default: `10000`
 
 ----
 
