@@ -51,7 +51,7 @@ Default: `false`
 Require files with the given EXTENSION after requiring MODULE.
 
 Type: `String[]`<br>
-Default: `*[]*<br>`
+Default: `*[]*`<br>
 Example: `['js:babel-core/register']`
 
 ### dryRun
