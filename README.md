@@ -72,6 +72,12 @@ Specify the output format, optionally supply PATH to redirect formatter output (
 Type: `String[]`<br>
 Default: `['pretty']`
 
+### name
+Only execute the scenarios with name matching the expression (repeatable).
+
+Type: `REGEXP[]`<br>
+Default: `[]`
+
 ### colors
 If false it disables colors in formatter output.
 
