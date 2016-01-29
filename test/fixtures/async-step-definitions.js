@@ -2,14 +2,16 @@ var assert = require('assert')
 
 module.exports = function () {
     this.Given(/^I go on the website "([^"]*)"$/, (url) => {
-        browser.url(url)
+        return browser.url(url)
     })
 
     this.Then(/^I click on link "([^"]*)"$/, (selector) => {
-        browser.click(selector)
+        return browser.click(selector)
     })
 
     this.Then(/^should the title of the page be "([^"]*)"$/, (expectedTitle) => {
-        assert.equal(browser.getTitle(), expectedTitle)
+        return browser.getTitle().then((title) => {
+            assert.equal(title, expectedTitle)
+        })
     })
 }

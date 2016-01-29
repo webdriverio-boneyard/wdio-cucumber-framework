@@ -2,6 +2,7 @@ import configQPromises from './fixtures/hooks.using.q.promises'
 import configNativePromises from './fixtures/hooks.using.native.promises'
 import configWDIOCommands from './fixtures/hooks.using.wdio.commands'
 import configCustomCommands from './fixtures/hooks.using.custom.commands'
+import configAsyncCommands from './fixtures/hooks.using.async.conf'
 import { CucumberAdapter } from '../lib/adapter'
 
 const specs = ['./test/fixtures/sample.feature']
@@ -526,5 +527,124 @@ describe('CucumberAdapter executes custom commands', () => {
     it.skip('should defer execution until custom command wrapping wdio comamnd treated as promise resolves', () => {
         let duration = global.____wdio.customWrapWdioPromiseAsPromiseResolves.end - global.____wdio.customWrapWdioPromiseAsPromiseResolves.start
         duration.should.be.greaterThan(1990)
+    })
+})
+
+describe('CucumberAdapter executes async hooks', () => {
+    before(async () => {
+        global.browser = new WebdriverIO()
+        global.browser.options = { sync: false }
+        const adapter = new CucumberAdapter(0, configAsyncCommands, specs, configQPromises.capabilities)
+        await adapter.run()
+    })
+
+    describe('before', () => {
+        let beforeHook
+
+        before(() => beforeHook = global._____wdio.before)
+
+        it('should defer execution until promise was resolved', () => {
+            let duration = beforeHook.end - beforeHook.start
+            duration.should.be.greaterThan(490)
+        })
+    })
+
+    describe('beforeFeature', () => {
+        let beforeFeatureHook
+
+        before(() => beforeFeatureHook = global._____wdio.beforeFeature)
+
+        it('should defer execution until promise was resolved', () => {
+            let duration = beforeFeatureHook.end - beforeFeatureHook.start
+            duration.should.be.greaterThan(490)
+        })
+    })
+
+    describe('beforeScenario', () => {
+        let beforeScenarioHook
+
+        before(() => beforeScenarioHook = global._____wdio.beforeScenario)
+
+        it('should defer execution until promise was resolved', () => {
+            let duration = beforeScenarioHook.end - beforeScenarioHook.start
+            duration.should.be.greaterThan(490)
+        })
+    })
+
+    describe('beforeStep', () => {
+        let beforeStepHook
+
+        before(() => beforeStepHook = global._____wdio.beforeStep)
+
+        it('should defer execution until promise was resolved', () => {
+            let duration = beforeStepHook.end - beforeStepHook.start
+            duration.should.be.greaterThan(490)
+        })
+    })
+
+    describe('beforeCommand', () => {
+        let beforeCommandHook
+
+        before(() => beforeCommandHook = global._____wdio.beforeCommand)
+
+        it('should defer execution until promise was resolved', () => {
+            let duration = beforeCommandHook.end - beforeCommandHook.start
+            duration.should.be.greaterThan(490)
+        })
+    })
+
+    describe('afterCommand', () => {
+        let afterCommandHook
+
+        before(() => afterCommandHook = global._____wdio.afterCommand)
+
+        it('should defer execution until promise was resolved', () => {
+            let duration = afterCommandHook.end - afterCommandHook.start
+            duration.should.be.greaterThan(490)
+        })
+    })
+
+    describe('afterStep', () => {
+        let afterStepHook
+
+        before(() => afterStepHook = global._____wdio.afterStep)
+
+        it('should defer execution until promise was resolved', () => {
+            let duration = afterStepHook.end - afterStepHook.start
+            duration.should.be.greaterThan(490)
+        })
+    })
+
+    describe('afterScenario', () => {
+        let afterScenarioHook
+
+        before(() => afterScenarioHook = global._____wdio.afterScenario)
+
+        it('should defer execution until promise was resolved', () => {
+            let duration = afterScenarioHook.end - afterScenarioHook.start
+            duration.should.be.greaterThan(490)
+        })
+    })
+
+    describe('afterFeature', () => {
+        let afterFeatureHook
+
+        before(() => afterFeatureHook = global._____wdio.afterFeature)
+
+        it('should defer execution until promise was resolved', () => {
+            let duration = afterFeatureHook.end - afterFeatureHook.start
+            duration.should.be.greaterThan(490)
+        })
+    })
+
+    describe('after', () => {
+        let afterHook
+
+        before(() => afterHook = global._____wdio.after)
+
+        it('should defer execution until promise was resolved', () => {
+            let duration = afterHook.end - afterHook.start
+            duration.should.be.greaterThan(490)
+        })
     })
 })
