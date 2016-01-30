@@ -582,28 +582,6 @@ describe('CucumberAdapter executes async hooks', () => {
         })
     })
 
-    describe('beforeCommand', () => {
-        let beforeCommandHook
-
-        before(() => beforeCommandHook = global._____wdio.beforeCommand)
-
-        it('should defer execution until promise was resolved', () => {
-            let duration = beforeCommandHook.end - beforeCommandHook.start
-            duration.should.be.greaterThan(490)
-        })
-    })
-
-    describe('afterCommand', () => {
-        let afterCommandHook
-
-        before(() => afterCommandHook = global._____wdio.afterCommand)
-
-        it('should defer execution until promise was resolved', () => {
-            let duration = afterCommandHook.end - afterCommandHook.start
-            duration.should.be.greaterThan(490)
-        })
-    })
-
     describe('afterStep', () => {
         let afterStepHook
 
