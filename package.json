@@ -4,7 +4,9 @@
   "description": "A WebdriverIO plugin. Adapter for Cucumber testing framework.",
   "main": "build/adapter.js",
   "scripts": {
-    "test": "grunt",
+    "build": "grunt",
+    "test": "grunt mocha_istanbul",
+    "prepublish": "npm prune && npm run build",
     "dev": "mocha --watch -r should -t 50000 --compilers js:babel/register test/*.spec.js"
   },
   "repository": {
