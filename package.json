@@ -27,14 +27,14 @@
   "homepage": "https://github.com/webdriverio/wdio-cucumber-framework#readme",
   "dependencies": {
     "cucumber": "0.9.4",
-    "wdio-sync": "0.4.5"
+    "wdio-sync": "0.4.6",
+    "babel-runtime": "^5.8.25"
   },
   "devDependencies": {
     "babel": "^5.8.23",
     "babel-core": "^5.8.23",
     "babel-eslint": "^4.1.1",
     "babel-plugin-rewire": "^0.1.22",
-    "babel-runtime": "^5.8.25",
     "codeclimate-test-reporter": "^0.1.1",
     "eslint": "^1.4.1",
     "eslint-config-standard": "^4.3.2",
