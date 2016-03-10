@@ -102,7 +102,7 @@ Specify the profile to use.
 Type: `String[]`<br>
 Default: `[]`
 
-### profile
+### require
 Require files/dir before executing features.
 
 Type: `String[]`<br>
