@@ -99,8 +99,8 @@ module.exports = function () {
     })
 
     this.Then(/^custom command wrapping wdio command treated as promise resolves$/, () => {
-        global.____wdio.customWrapWdioPromiseAsPromiseResolves.start = new Date().getTime()
-        browser.customWrapWdioPromiseAsPromiseResolves(1).should.be.equal(3)
-        global.____wdio.customWrapWdioPromiseAsPromiseResolves.end = new Date().getTime()
+        global.____wdio.customHandleWdioAsPromise.start = new Date().getTime()
+        browser.customHandleWdioAsPromise(1).should.be.equal(3)
+        global.____wdio.customHandleWdioAsPromise.end = new Date().getTime()
     })
 }

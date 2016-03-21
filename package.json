@@ -29,7 +29,7 @@
   "homepage": "https://github.com/webdriverio/wdio-cucumber-framework#readme",
   "dependencies": {
     "cucumber": "0.9.4",
-    "wdio-sync": "0.4.6",
+    "wdio-sync": "0.4.8",
     "babel-runtime": "^5.8.25"
   },
   "devDependencies": {
