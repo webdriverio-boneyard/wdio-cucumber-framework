@@ -35,8 +35,8 @@ process.send = NOOP
 describe('CucumberAdapter executes hooks using native Promises', () => {
     before(async () => {
         global.browser = new WebdriverIO()
-        const adapter = new CucumberAdapter(0, configNativePromises, specs, configNativePromises.capabilities)
-        await adapter.run()
+        const adapter = new CucumberAdapter(0, configNativePromises, specs, configNativePromises.capabilities);
+        (await adapter.run()).should.be.equal(0, 'actual test failed')
     })
 
     describe('before', () => {
@@ -247,8 +247,8 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
 describe('CucumberAdapter executes hooks using WDIO commands', () => {
     before(async () => {
         global.browser = new WebdriverIO()
-        const adapter = new CucumberAdapter(0, configWDIOCommands, specs, configWDIOCommands.capabilities)
-        await adapter.run()
+        const adapter = new CucumberAdapter(0, configWDIOCommands, specs, configWDIOCommands.capabilities);
+        (await adapter.run()).should.be.equal(0, 'actual test failed')
     })
 
     describe('before', () => {
@@ -365,8 +365,8 @@ describe('CucumberAdapter executes hooks using WDIO commands', () => {
 describe('CucumberAdapter executes hooks using 3rd party libs (q library)', () => {
     before(async () => {
         global.browser = new WebdriverIO()
-        const adapter = new CucumberAdapter(0, configQPromises, specs, configQPromises.capabilities)
-        await adapter.run()
+        const adapter = new CucumberAdapter(0, configQPromises, specs, configQPromises.capabilities);
+        (await adapter.run()).should.be.equal(0, 'actual test failed')
     })
 
     describe('before', () => {
@@ -483,8 +483,8 @@ describe('CucumberAdapter executes hooks using 3rd party libs (q library)', () =
 describe('CucumberAdapter executes custom commands', () => {
     before(async () => {
         global.browser = new WebdriverIO()
-        const adapter = new CucumberAdapter(0, configCustomCommands, customCommandSpecs, configCustomCommands.capabilities)
-        await adapter.run()
+        const adapter = new CucumberAdapter(0, configCustomCommands, customCommandSpecs, configCustomCommands.capabilities);
+        (await adapter.run()).should.be.equal(0, 'actual test failed')
     })
 
     it('should defer execution until custom wdio command completes', () => {
@@ -525,7 +525,7 @@ describe('CucumberAdapter executes custom commands', () => {
     // Doesn't currently wait: AssertionError: expected 0 to be above 1990
     // See: https://github.com/webdriverio/wdio-sync/issues/16
     it.skip('should defer execution until custom command wrapping wdio comamnd treated as promise resolves', () => {
-        let duration = global.____wdio.customWrapWdioPromiseAsPromiseResolves.end - global.____wdio.customWrapWdioPromiseAsPromiseResolves.start
+        let duration = global.____wdio.customHandleWdioAsPromise.end - global.____wdio.customHandleWdioAsPromise.start
         duration.should.be.greaterThan(1990)
     })
 })
@@ -534,8 +534,8 @@ describe('CucumberAdapter executes async hooks', () => {
     before(async () => {
         global.browser = new WebdriverIO()
         global.browser.options = { sync: false }
-        const adapter = new CucumberAdapter(0, configAsyncCommands, specs, configQPromises.capabilities)
-        await adapter.run()
+        const adapter = new CucumberAdapter(0, configAsyncCommands, specs, {});
+        (await adapter.run()).should.be.equal(0, 'actual test failed')
     })
 
     describe('before', () => {
