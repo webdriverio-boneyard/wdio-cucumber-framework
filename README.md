@@ -23,6 +23,24 @@ npm install wdio-cucumber-framework --save-dev
 
 Instructions on how to install `WebdriverIO` can be found [here.](http://webdriver.io/guide/getstarted/install.html)
 
+### Install Cucumber
+
+Note that `cucumber` is defined as a peer dependency so make sure it is installed in your project as well.
+
+```json
+{
+  "devDependencies": {
+    "cucumber": "~0.10"
+  }
+}
+```
+
+You can simply do it by:
+
+```bash
+npm install cucumber --save-dev
+```
+
 ## Configuration
 
 Following code shows the default wdio test runner configuration...
