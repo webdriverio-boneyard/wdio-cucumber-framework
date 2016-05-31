@@ -6,7 +6,7 @@ let lastCommand
 global.syncAsync = {}
 
 module.exports = function () {
-    this.Given(/^I go on the website "([^"]*)" that can fail one time$/, {retry: 1}, (url) => {
+    this.Given(/^I go on the website "([^"]*)" that can fail one time$/, { retry: 1 }, (url) => {
         let res = browser.url(url)
         if (retryTest !== 0) {
             retryTest--
@@ -19,7 +19,7 @@ module.exports = function () {
         retryTest = parseInt(cnt, 10)
     })
 
-    this.Given(/^I go on the website "([^"]*)" the async way$/, {retry: 3}, function async (url) {
+    this.Given(/^I go on the website "([^"]*)" the async way$/, { retry: 3 }, function async (url) {
         return browser.url(url).then((res) => {
             if (retryTest !== 0) {
                 retryTest--
@@ -29,7 +29,7 @@ module.exports = function () {
         })
     })
 
-    this.Then(/^should the title of the page be "([^"]*)"$/, {retry: 2}, (expectedTitle) => {
+    this.Then(/^should the title of the page be "([^"]*)"$/, { retry: 2 }, (expectedTitle) => {
         let title = browser.getTitle()
         if (retryTest !== 0) {
             retryTest--
