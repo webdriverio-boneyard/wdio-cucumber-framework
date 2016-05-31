@@ -5,6 +5,8 @@ import { CucumberAdapter } from '../lib/adapter'
 const specs = ['./test/fixtures/sample.feature']
 const syncAsyncSpecs = ['./test/fixtures/sync-async.feature']
 
+const NOOP = () => {}
+
 const WebdriverIO = class {}
 WebdriverIO.prototype = {
     /**
@@ -25,14 +27,16 @@ WebdriverIO.prototype = {
     })
 }
 
+process.send = NOOP
+
 let timeToExecute
-describe('CucumberAdapter', () => {
+describe('syncAsyncTest', () => {
     describe('executes step definitions async', () => {
         before(async () => {
             global.browser = new WebdriverIO()
             global.browser.options = { sync: false }
-
             const adapter = new CucumberAdapter(0, configAsync, specs, {})
+            global.browser.getPrototype = () => WebdriverIO.prototype
 
             const start = new Date().getTime();
             (await adapter.run()).should.be.equal(0, 'actual test failed')
@@ -48,6 +52,7 @@ describe('CucumberAdapter', () => {
         before(async () => {
             global.browser = new WebdriverIO()
             const adapter = new CucumberAdapter(0, configSyncAsync, syncAsyncSpecs, {})
+            global.browser.getPrototype = () => WebdriverIO.prototype
 
             const start = new Date().getTime();
             (await adapter.run()).should.be.equal(0, 'actual test failed')

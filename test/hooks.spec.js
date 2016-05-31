@@ -35,7 +35,8 @@ process.send = NOOP
 describe('CucumberAdapter executes hooks using native Promises', () => {
     before(async () => {
         global.browser = new WebdriverIO()
-        const adapter = new CucumberAdapter(0, configNativePromises, specs, configNativePromises.capabilities);
+        const adapter = new CucumberAdapter(0, configNativePromises, specs, configNativePromises.capabilities)
+        global.browser.getPrototype = () => WebdriverIO.prototype;
         (await adapter.run()).should.be.equal(0, 'actual test failed')
     })
 
@@ -247,7 +248,8 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
 describe('CucumberAdapter executes hooks using WDIO commands', () => {
     before(async () => {
         global.browser = new WebdriverIO()
-        const adapter = new CucumberAdapter(0, configWDIOCommands, specs, configWDIOCommands.capabilities);
+        const adapter = new CucumberAdapter(0, configWDIOCommands, specs, configWDIOCommands.capabilities)
+        global.browser.getPrototype = () => WebdriverIO.prototype;
         (await adapter.run()).should.be.equal(0, 'actual test failed')
     })
 
@@ -360,12 +362,17 @@ describe('CucumberAdapter executes hooks using WDIO commands', () => {
             duration.should.be.greaterThan(490)
         })
     })
+
+    after(() => {
+        delete global.browser
+    })
 })
 
 describe('CucumberAdapter executes hooks using 3rd party libs (q library)', () => {
     before(async () => {
         global.browser = new WebdriverIO()
-        const adapter = new CucumberAdapter(0, configQPromises, specs, configQPromises.capabilities);
+        const adapter = new CucumberAdapter(0, configQPromises, specs, configQPromises.capabilities)
+        global.browser.getPrototype = () => WebdriverIO.prototype;
         (await adapter.run()).should.be.equal(0, 'actual test failed')
     })
 
@@ -478,12 +485,17 @@ describe('CucumberAdapter executes hooks using 3rd party libs (q library)', () =
             duration.should.be.greaterThan(490)
         })
     })
+
+    after(() => {
+        delete global.browser
+    })
 })
 
 describe('CucumberAdapter executes custom commands', () => {
     before(async () => {
         global.browser = new WebdriverIO()
-        const adapter = new CucumberAdapter(0, configCustomCommands, customCommandSpecs, configCustomCommands.capabilities);
+        const adapter = new CucumberAdapter(0, configCustomCommands, customCommandSpecs, configCustomCommands.capabilities)
+        global.browser.getPrototype = () => WebdriverIO.prototype;
         (await adapter.run()).should.be.equal(0, 'actual test failed')
     })
 
@@ -528,13 +540,18 @@ describe('CucumberAdapter executes custom commands', () => {
         let duration = global.____wdio.customHandleWdioAsPromise.end - global.____wdio.customHandleWdioAsPromise.start
         duration.should.be.greaterThan(1990)
     })
+
+    after(() => {
+        delete global.browser
+    })
 })
 
 describe('CucumberAdapter executes async hooks', () => {
     before(async () => {
         global.browser = new WebdriverIO()
         global.browser.options = { sync: false }
-        const adapter = new CucumberAdapter(0, configAsyncCommands, specs, {});
+        const adapter = new CucumberAdapter(0, configAsyncCommands, specs, {})
+        global.browser.getPrototype = () => WebdriverIO.prototype;
         (await adapter.run()).should.be.equal(0, 'actual test failed')
     })
 
@@ -624,5 +641,9 @@ describe('CucumberAdapter executes async hooks', () => {
             let duration = afterHook.end - afterHook.start
             duration.should.be.greaterThan(490)
         })
+    })
+
+    after(() => {
+        delete global.browser
     })
 })

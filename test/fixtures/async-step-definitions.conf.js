@@ -1,6 +1,7 @@
 const NOOP = () => {}
 
 export default {
+    sync: false,
     capabilities: {
         browserName: 'chrome'
     },

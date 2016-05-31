@@ -33,11 +33,12 @@ WebdriverIO.prototype = {
 process.send = NOOP
 
 let timeToExecute
-describe('CucumberAdapter', () => {
-    describe('executes step definitions async', () => {
+describe('retryTest', () => {
+    describe('can retry failed step definitions', () => {
         before(async () => {
             global.browser = new WebdriverIO()
             const adapter = new CucumberAdapter(0, conf, feature, {})
+            global.browser.getPrototype = () => WebdriverIO.prototype
 
             const start = new Date().getTime();
             (await adapter.run()).should.be.equal(0, 'actual test failed')
