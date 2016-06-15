@@ -30,7 +30,7 @@ Note that `cucumber` is defined as a peer dependency so make sure it is installe
 ```json
 {
   "devDependencies": {
-    "cucumber": "~0.10"
+    "cucumber": "^1.0.0"
   }
 }
 ```
