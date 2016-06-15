@@ -58,7 +58,7 @@
     "sinon": "^1.17.1"
   },
   "peerDependencies": {
-    "cucumber": ">=0.10.2"
+    "cucumber": "^1.0.0"
   },
   "babel": {
     "env": {
