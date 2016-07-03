@@ -10,7 +10,7 @@ The easiest way is to keep `wdio-cucumber-framework` as a devDependency in your 
 ```json
 {
   "devDependencies": {
-    "wdio-cucumber-framework": "~0.1"
+    "wdio-cucumber-framework": "~0.2.0"
   }
 }
 ```
@@ -30,7 +30,7 @@ Note that `cucumber` is defined as a peer dependency so make sure it is installe
 ```json
 {
   "devDependencies": {
-    "cucumber": "^1.0.0"
+    "cucumber": "~1.2.0"
   }
 }
 ```
