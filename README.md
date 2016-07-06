@@ -148,7 +148,7 @@ Default: `[]`
 Timeout for step definitions.
 
 Type: `Number`<br>
-Default: `10000`
+Default: `30000`
 
 ----
 
