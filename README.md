@@ -145,10 +145,24 @@ Type: `String[]`<br>
 Default: `[]`
 
 ### timeout
-Timeout for step definitions.
+Timeout in milliseconds for step definitions.
 
 Type: `Number`<br>
 Default: `30000`
+
+### ignoreUndefinedDefinitions
+**Please not that this is a wdio-cucumber-framework specifc option and not recognized by cucumber-js itself**
+Treat undefined definitions as warnings.
+
+Type: `Boolean`<br>
+Default: `false`
+
+### failAmbiguousDefinitions
+**Please not that this is a wdio-cucumber-framework specifc option and not recognized by cucumber-js itself**
+Treat ambiguous definitions as errors.
+
+Type: `Boolean`<br>
+Default: `false`
 
 ----
 
