@@ -65,4 +65,8 @@ describe('ignores service hook errors', () => {
         }, specs, {});
         (await adapter.run()).should.be.equal(0, 'actual test failed')
     })
+
+    after(() => {
+        delete global.browser
+    })
 })
