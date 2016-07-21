@@ -158,7 +158,7 @@ Type: `Boolean`<br>
 Default: `false`
 
 ### failAmbiguousDefinitions
-**Please not that this is a wdio-cucumber-framework specifc option and not recognized by cucumber-js itself**
+**Please note that this is a wdio-cucumber-framework specifc option and not recognized by cucumber-js itself**
 Treat ambiguous definitions as errors.
 
 Type: `Boolean`<br>
