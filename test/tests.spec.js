@@ -51,6 +51,7 @@ describe('syncAsyncTest', () => {
     describe('executes step definitions sync or async', () => {
         before(async () => {
             global.browser = new WebdriverIO()
+            global.browser.options = {}
             const adapter = new CucumberAdapter(0, configSyncAsync, syncAsyncSpecs, {})
             global.browser.getPrototype = () => WebdriverIO.prototype
 

@@ -35,6 +35,7 @@ process.send = NOOP
 describe('CucumberAdapter executes hooks using native Promises', () => {
     before(async () => {
         global.browser = new WebdriverIO()
+        global.browser.options = {}
         const adapter = new CucumberAdapter(0, configNativePromises, specs, configNativePromises.capabilities)
         global.browser.getPrototype = () => WebdriverIO.prototype;
         (await adapter.run()).should.be.equal(0, 'actual test failed')
@@ -248,6 +249,7 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
 describe('CucumberAdapter executes hooks using WDIO commands', () => {
     before(async () => {
         global.browser = new WebdriverIO()
+        global.browser.options = {}
         const adapter = new CucumberAdapter(0, configWDIOCommands, specs, configWDIOCommands.capabilities)
         global.browser.getPrototype = () => WebdriverIO.prototype;
         (await adapter.run()).should.be.equal(0, 'actual test failed')
@@ -371,6 +373,7 @@ describe('CucumberAdapter executes hooks using WDIO commands', () => {
 describe('CucumberAdapter executes hooks using 3rd party libs (q library)', () => {
     before(async () => {
         global.browser = new WebdriverIO()
+        global.browser.options = {}
         const adapter = new CucumberAdapter(0, configQPromises, specs, configQPromises.capabilities)
         global.browser.getPrototype = () => WebdriverIO.prototype;
         (await adapter.run()).should.be.equal(0, 'actual test failed')
@@ -494,6 +497,7 @@ describe('CucumberAdapter executes hooks using 3rd party libs (q library)', () =
 describe('CucumberAdapter executes custom commands', () => {
     before(async () => {
         global.browser = new WebdriverIO()
+        global.browser.options = {}
         const adapter = new CucumberAdapter(0, configCustomCommands, customCommandSpecs, configCustomCommands.capabilities)
         global.browser.getPrototype = () => WebdriverIO.prototype;
         (await adapter.run()).should.be.equal(0, 'actual test failed')

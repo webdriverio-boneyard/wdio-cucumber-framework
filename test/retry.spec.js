@@ -37,6 +37,7 @@ describe('retryTest', () => {
     describe('can retry failed step definitions', () => {
         before(async () => {
             global.browser = new WebdriverIO()
+            global.browser.options = {}
             const adapter = new CucumberAdapter(0, conf, feature, {})
             global.browser.getPrototype = () => WebdriverIO.prototype
 
