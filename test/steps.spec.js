@@ -33,7 +33,7 @@ describe('steps', () => {
             // pending
             'suite:start',
             'test:start',
-            'test:pending',
+            'test:skipped',
             'suite:end',
 
             'suite:end'
