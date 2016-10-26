@@ -541,9 +541,7 @@ describe('CucumberAdapter executes custom commands', () => {
         duration.should.be.greaterThan(1990)
     })
 
-    // Doesn't currently wait: AssertionError: expected 0 to be above 1990
-    // See: https://github.com/webdriverio/wdio-sync/issues/16
-    it.skip('should defer execution until custom command wrapping wdio comamnd treated as promise resolves', () => {
+    it('should defer execution until custom command wrapping wdio comamnd treated as promise resolves', () => {
         let duration = global.____wdio.customHandleWdioAsPromise.end - global.____wdio.customHandleWdioAsPromise.start
         duration.should.be.greaterThan(1990)
     })
