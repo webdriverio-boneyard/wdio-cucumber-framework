@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/webdriverio/wdio-cucumber-framework#readme",
   "dependencies": {
-    "wdio-sync": "0.6.4",
+    "wdio-sync": "0.6.5",
     "babel-runtime": "^5.8.25"
   },
   "devDependencies": {
