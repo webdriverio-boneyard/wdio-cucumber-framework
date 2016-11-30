@@ -151,7 +151,7 @@ Type: `Number`<br>
 Default: `30000`
 
 ### ignoreUndefinedDefinitions
-**Please not that this is a wdio-cucumber-framework specifc option and not recognized by cucumber-js itself**
+**Please note that this is a wdio-cucumber-framework specifc option and not recognized by cucumber-js itself**
 Treat undefined definitions as warnings.
 
 Type: `Boolean`<br>
