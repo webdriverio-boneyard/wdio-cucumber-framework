@@ -23,10 +23,11 @@ function getEvent (name, status = 'pass', line = Math.round(Math.random() * 100)
 
 const NOOP = () => {}
 
-describe.only('cucumber reporter', () => {
+describe('cucumber reporter', () => {
     before(() => {
         reporter = new CucumberReporter({}, {}, '0-1', ['/foobar.js'])
-        send = reporter.send = sinon.spy()
+        send = reporter.send = sinon.stub()
+        send.returns(true)
     })
 
     describe('emits messages for certain cucumber events', () => {
