@@ -14,8 +14,8 @@
     "release:major": "np major",
     "test": "run-s eslint test:unit",
     "test:ci": "run-s clean eslint test:cover",
-    "test:unit": "mocha --compilers js:babel-core/register --colors --require should --reporter dot test/*.js",
-    "test:cover": "babel-node ./node_modules/.bin/isparta cover --include 'lib/*.js' _mocha -- --require should",
+    "test:unit": "mocha --compilers js:babel-core/register test/*.js",
+    "test:cover": "babel-node ./node_modules/.bin/isparta cover --include 'lib/*.js' _mocha",
     "prepublish": "npm prune && run-s build test",
     "watch": "npm run compile -- --watch"
   },
