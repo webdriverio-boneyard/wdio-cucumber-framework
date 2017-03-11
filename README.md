@@ -1,5 +1,9 @@
-WDIO Cucumber [![Build Status](https://travis-ci.org/webdriverio/wdio-cucumber-framework.svg?branch=master)](https://travis-ci.org/webdriverio/wdio-cucumber-framework) [![Code Climate](https://codeclimate.com/github/webdriverio/wdio-cucumber-framework/badges/gpa.svg)](https://codeclimate.com/github/webdriverio/wdio-cucumber-framework) [![Test Coverage](https://codeclimate.com/github/webdriverio/wdio-cucumber-framework/badges/coverage.svg)](https://codeclimate.com/github/webdriverio/wdio-cucumber-framework/coverage)
-==========
+WDIO Cucumber Framework Adapter
+===============================
+
+[![Build Status](https://travis-ci.org/webdriverio/wdio-cucumber-framework.svg?branch=master)](https://travis-ci.org/webdriverio/wdio-cucumber-framework) [![Code Climate](https://codeclimate.com/github/webdriverio/wdio-cucumber-framework/badges/gpa.svg)](https://codeclimate.com/github/webdriverio/wdio-cucumber-framework) [![Test Coverage](https://codeclimate.com/github/webdriverio/wdio-cucumber-framework/badges/coverage.svg)](https://codeclimate.com/github/webdriverio/wdio-cucumber-framework/coverage) [![dependencies Status](https://david-dm.org/webdriverio/wdio-cucumber-framework/status.svg)](https://david-dm.org/webdriverio/wdio-cucumber-framework)
+
+***
 
 > A WebdriverIO plugin. Adapter for CucumberJS testing framework.
 
@@ -163,6 +167,31 @@ Treat ambiguous definitions as errors.
 
 Type: `Boolean`<br>
 Default: `false`
+
+## Development
+
+All commands can be found in the package.json. The most important are:
+
+Watch changes:
+
+```sh
+$ npm run watch
+```
+
+Run tests:
+
+```sh
+$ npm test
+
+# run test with coverage report:
+$ npm run test:cover
+```
+
+Build package:
+
+```sh
+$ npm build
+```
 
 ----
 
