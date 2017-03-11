@@ -76,35 +76,17 @@ Type: `String[]`<br>
 Default: `*[]*`<br>
 Example: `['js:babel-core/register']`
 
-### dryRun
-Invoke formatters without executing steps.
-
-Type: `Boolean`<br>
-Default: `false`
-
 ### failFast
 Abort the run on first failure.
 
 Type: `Boolean`<br>
 Default: `false`
 
-### format
-Specify the output format, optionally supply PATH to redirect formatter output (repeatable).
-
-Type: `String[]`<br>
-Default: `['pretty']`
-
 ### name
 Only execute the scenarios with name matching the expression (repeatable).
 
 Type: `REGEXP[]`<br>
 Default: `[]`
-
-### colors
-If false it disables colors in formatter output.
-
-Type: `Boolean`<br>
-Default: `true`
 
 ### snippets
 Hide step definition snippets for pending steps.
@@ -143,7 +125,8 @@ Type: `Boolean`<br>
 Default: `false`
 
 ### tags
-Only execute the features or scenarios with tags matching the expression.
+Only execute the features or scenarios with tags matching the expression. Note that untagged
+features will still spawn a Selenium session (see issue [webdriverio/webdriverio#1247](https://github.com/webdriverio/webdriverio/issues/1247)). The recommended way to specify a subset of feature files is to use [suites](http://webdriver.io/guide/testrunner/organizesuite.html#Group-Test-Specs).
 
 Type: `String[]`<br>
 Default: `[]`
