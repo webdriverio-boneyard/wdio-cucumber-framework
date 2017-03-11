@@ -1,9 +1,10 @@
+import path from 'path'
 import { CucumberAdapter } from '../lib/adapter'
 
 const conf = {
     cucumberOpts: {
         timeout: 15000,
-        require: [__dirname + '/fixtures/retry-step-definition.js']
+        require: [path.join(__dirname, '/fixtures/retry-step-definition.js')]
     }
 }
 const feature = ['./test/fixtures/retry.feature']
@@ -16,17 +17,17 @@ WebdriverIO.prototype = {
      * task of this command is to add 1 so we can have a simple demo test like
      * browser.command(1).should.be.equal(2)
      */
-    url: () => new Promise((r) => {
-        setTimeout(() => r('url'), 1000)
+    url: () => new Promise((resolve) => {
+        setTimeout(() => resolve('url'), 1000)
     }),
-    click: () => new Promise((r) => {
-        setTimeout(() => r('click'), 1000)
+    click: () => new Promise((resolve) => {
+        setTimeout(() => resolve('click'), 1000)
     }),
-    getTitle: (ms = 500) => new Promise((r) => {
-        setTimeout(() => r('Google'), 1000)
+    getTitle: (ms = 500) => new Promise((resolve) => {
+        setTimeout(() => resolve('Google'), 1000)
     }),
-    pause: (ms = 500) => new Promise((r) => {
-        setTimeout(() => r('pause'), 1000)
+    pause: (ms = 500) => new Promise((resolve) => {
+        setTimeout(() => resolve('pause'), 1000)
     })
 }
 

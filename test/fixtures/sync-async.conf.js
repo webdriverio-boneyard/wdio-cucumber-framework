@@ -1,3 +1,5 @@
+import path from 'path'
+
 const NOOP = () => {}
 
 export default {
@@ -7,7 +9,7 @@ export default {
 
     cucumberOpts: {
         timeout: 5000,
-        require: [__dirname + '/sync-async-step-definition.js']
+        require: [path.join(__dirname, '/sync-async-step-definition.js')]
     },
 
     onPrepare: NOOP,

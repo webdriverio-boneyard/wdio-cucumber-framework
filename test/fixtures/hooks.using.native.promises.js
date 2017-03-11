@@ -1,3 +1,5 @@
+import path from 'path'
+
 global._wdio = {}
 
 export default {
@@ -7,7 +9,7 @@ export default {
 
     cucumberOpts: {
         timeout: 5000,
-        require: [__dirname + '/step-definitions.js']
+        require: [path.join(__dirname, '/step-definitions.js')]
     },
 
     before: (...args) => {

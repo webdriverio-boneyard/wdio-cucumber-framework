@@ -1,3 +1,5 @@
+import path from 'path'
+
 const NOOP = () => {}
 
 global.____wdio = {
@@ -18,7 +20,7 @@ export default {
 
     cucumberOpts: {
         timeout: 5000,
-        require: [__dirname + '/custom-commands.js']
+        require: [path.join(__dirname, '/custom-commands.js')]
     },
 
     onPrepare: NOOP,

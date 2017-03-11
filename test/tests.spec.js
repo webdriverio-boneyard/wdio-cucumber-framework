@@ -13,17 +13,17 @@ WebdriverIO.prototype = {
      * task of this command is to add 1 so we can have a simple demo test like
      * browser.command(1).should.be.equal(2)
      */
-    url: () => new Promise((r) => {
-        setTimeout(() => r(), 2000)
+    url: () => new Promise((resolve) => {
+        setTimeout(() => resolve(), 2000)
     }),
-    click: () => new Promise((r) => {
-        setTimeout(() => r(), 2000)
+    click: () => new Promise((resolve) => {
+        setTimeout(() => resolve(), 2000)
     }),
-    getTitle: (ms = 500) => new Promise((r) => {
-        setTimeout(() => r('Google'), ms)
+    getTitle: (ms = 500) => new Promise((resolve) => {
+        setTimeout(() => resolve('Google'), ms)
     }),
-    pause: (ms = 500) => new Promise((r) => {
-        setTimeout(() => r(), ms)
+    pause: (ms = 500) => new Promise((resolve) => {
+        setTimeout(() => resolve(), ms)
     })
 }
 

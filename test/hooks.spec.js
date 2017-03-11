@@ -16,17 +16,17 @@ WebdriverIO.prototype = {
      * task of this command is to add 1 so we can have a simple demo test like
      * browser.command(1).should.be.equal(2)
      */
-    url: () => new Promise((r) => {
-        setTimeout(() => r(), 2000)
+    url: () => new Promise((resolve) => {
+        setTimeout(() => resolve(), 2000)
     }),
-    click: () => new Promise((r) => {
-        setTimeout(() => r(), 2000)
+    click: () => new Promise((resolve) => {
+        setTimeout(() => resolve(), 2000)
     }),
-    getTitle: (ms = 500) => new Promise((r) => {
-        setTimeout(() => r('Google'), ms)
+    getTitle: (ms = 500) => new Promise((resolve) => {
+        setTimeout(() => resolve('Google'), ms)
     }),
-    pause: (ms = 500) => new Promise((r) => {
-        setTimeout(() => r(), ms)
+    pause: (ms = 500) => new Promise((resolve) => {
+        setTimeout(() => resolve(), ms)
     }),
     addCommand: (name, fn) => {
         WebdriverIO.prototype[name] = fn
@@ -47,7 +47,9 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
     describe('before', () => {
         let beforeHook
 
-        before(() => beforeHook = global._wdio.before)
+        before(() => {
+            beforeHook = global._wdio.before
+        })
 
         it('should get executed', () => {
             beforeHook.wasExecuted.should.be.true()
@@ -67,7 +69,9 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
     describe('beforeFeature', () => {
         let beforeFeatureHook
 
-        before(() => beforeFeatureHook = global._wdio.beforeFeature)
+        before(() => {
+            beforeFeatureHook = global._wdio.beforeFeature
+        })
 
         it('should get executed', () => {
             beforeFeatureHook.wasExecuted.should.be.true()
@@ -87,7 +91,9 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
     describe('beforeScenario', () => {
         let beforeScenarioHook
 
-        before(() => beforeScenarioHook = global._wdio.beforeScenario)
+        before(() => {
+            beforeScenarioHook = global._wdio.beforeScenario
+        })
 
         it('should get executed', () => {
             beforeScenarioHook.wasExecuted.should.be.true()
@@ -107,7 +113,9 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
     describe('beforeStep', () => {
         let beforeStepHook
 
-        before(() => beforeStepHook = global._wdio.beforeStep)
+        before(() => {
+            beforeStepHook = global._wdio.beforeStep
+        })
 
         it('should get executed', () => {
             beforeStepHook.wasExecuted.should.be.true()
@@ -127,7 +135,9 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
     describe('beforeCommand', () => {
         let beforeCommandHook
 
-        before(() => beforeCommandHook = global._wdio.beforeCommand)
+        before(() => {
+            beforeCommandHook = global._wdio.beforeCommand
+        })
 
         it('should get executed', () => {
             beforeCommandHook.wasExecuted.should.be.true()
@@ -146,7 +156,9 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
     describe('afterCommand', () => {
         let afterCommandHook
 
-        before(() => afterCommandHook = global._wdio.afterCommand)
+        before(() => {
+            afterCommandHook = global._wdio.afterCommand
+        })
 
         it('should get executed', () => {
             afterCommandHook.wasExecuted.should.be.true()
@@ -166,7 +178,9 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
     describe('afterStep', () => {
         let afterStepHook
 
-        before(() => afterStepHook = global._wdio.afterStep)
+        before(() => {
+            afterStepHook = global._wdio.afterStep
+        })
 
         it('should get executed', () => {
             afterStepHook.wasExecuted.should.be.true()
@@ -186,7 +200,9 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
     describe('afterScenario', () => {
         let afterScenarioHook
 
-        before(() => afterScenarioHook = global._wdio.afterScenario)
+        before(() => {
+            afterScenarioHook = global._wdio.afterScenario
+        })
 
         it('should get executed', () => {
             afterScenarioHook.wasExecuted.should.be.true()
@@ -206,7 +222,9 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
     describe('afterFeature', () => {
         let afterFeatureHook
 
-        before(() => afterFeatureHook = global._wdio.afterFeature)
+        before(() => {
+            afterFeatureHook = global._wdio.afterFeature
+        })
 
         it('should get executed', () => {
             afterFeatureHook.wasExecuted.should.be.true()
@@ -226,7 +244,9 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
     describe('after', () => {
         let afterHook
 
-        before(() => afterHook = global._wdio.after)
+        before(() => {
+            afterHook = global._wdio.after
+        })
 
         it('should get executed', () => {
             afterHook.wasExecuted.should.be.true()
@@ -261,7 +281,9 @@ describe('CucumberAdapter executes hooks using WDIO commands', () => {
     describe('before', () => {
         let beforeHook
 
-        before(() => beforeHook = global.__wdio.before)
+        before(() => {
+            beforeHook = global.__wdio.before
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = beforeHook.end - beforeHook.start
@@ -272,7 +294,9 @@ describe('CucumberAdapter executes hooks using WDIO commands', () => {
     describe('beforeFeature', () => {
         let beforeFeatureHook
 
-        before(() => beforeFeatureHook = global.__wdio.beforeFeature)
+        before(() => {
+            beforeFeatureHook = global.__wdio.beforeFeature
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = beforeFeatureHook.end - beforeFeatureHook.start
@@ -283,7 +307,9 @@ describe('CucumberAdapter executes hooks using WDIO commands', () => {
     describe('beforeScenario', () => {
         let beforeScenarioHook
 
-        before(() => beforeScenarioHook = global.__wdio.beforeScenario)
+        before(() => {
+            beforeScenarioHook = global.__wdio.beforeScenario
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = beforeScenarioHook.end - beforeScenarioHook.start
@@ -294,7 +320,9 @@ describe('CucumberAdapter executes hooks using WDIO commands', () => {
     describe('beforeStep', () => {
         let beforeStepHook
 
-        before(() => beforeStepHook = global.__wdio.beforeStep)
+        before(() => {
+            beforeStepHook = global.__wdio.beforeStep
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = beforeStepHook.end - beforeStepHook.start
@@ -305,7 +333,9 @@ describe('CucumberAdapter executes hooks using WDIO commands', () => {
     describe('beforeCommand', () => {
         let beforeCommandHook
 
-        before(() => beforeCommandHook = global.__wdio.beforeCommand)
+        before(() => {
+            beforeCommandHook = global.__wdio.beforeCommand
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = beforeCommandHook.end - beforeCommandHook.start
@@ -316,7 +346,9 @@ describe('CucumberAdapter executes hooks using WDIO commands', () => {
     describe('afterCommand', () => {
         let afterCommandHook
 
-        before(() => afterCommandHook = global.__wdio.afterCommand)
+        before(() => {
+            afterCommandHook = global.__wdio.afterCommand
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = afterCommandHook.end - afterCommandHook.start
@@ -327,7 +359,9 @@ describe('CucumberAdapter executes hooks using WDIO commands', () => {
     describe('afterStep', () => {
         let afterStepHook
 
-        before(() => afterStepHook = global.__wdio.afterStep)
+        before(() => {
+            afterStepHook = global.__wdio.afterStep
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = afterStepHook.end - afterStepHook.start
@@ -338,7 +372,9 @@ describe('CucumberAdapter executes hooks using WDIO commands', () => {
     describe('afterScenario', () => {
         let afterScenarioHook
 
-        before(() => afterScenarioHook = global.__wdio.afterScenario)
+        before(() => {
+            afterScenarioHook = global.__wdio.afterScenario
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = afterScenarioHook.end - afterScenarioHook.start
@@ -349,7 +385,9 @@ describe('CucumberAdapter executes hooks using WDIO commands', () => {
     describe('afterFeature', () => {
         let afterFeatureHook
 
-        before(() => afterFeatureHook = global.__wdio.afterFeature)
+        before(() => {
+            afterFeatureHook = global.__wdio.afterFeature
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = afterFeatureHook.end - afterFeatureHook.start
@@ -360,7 +398,9 @@ describe('CucumberAdapter executes hooks using WDIO commands', () => {
     describe('after', () => {
         let afterHook
 
-        before(() => afterHook = global.__wdio.after)
+        before(() => {
+            afterHook = global.__wdio.after
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = afterHook.end - afterHook.start
@@ -385,7 +425,9 @@ describe('CucumberAdapter executes hooks using 3rd party libs (q library)', () =
     describe('before', () => {
         let beforeHook
 
-        before(() => beforeHook = global.___wdio.before)
+        before(() => {
+            beforeHook = global.___wdio.before
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = beforeHook.end - beforeHook.start
@@ -396,7 +438,9 @@ describe('CucumberAdapter executes hooks using 3rd party libs (q library)', () =
     describe('beforeFeature', () => {
         let beforeFeatureHook
 
-        before(() => beforeFeatureHook = global.___wdio.beforeFeature)
+        before(() => {
+            beforeFeatureHook = global.___wdio.beforeFeature
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = beforeFeatureHook.end - beforeFeatureHook.start
@@ -407,7 +451,9 @@ describe('CucumberAdapter executes hooks using 3rd party libs (q library)', () =
     describe('beforeScenario', () => {
         let beforeScenarioHook
 
-        before(() => beforeScenarioHook = global.___wdio.beforeScenario)
+        before(() => {
+            beforeScenarioHook = global.___wdio.beforeScenario
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = beforeScenarioHook.end - beforeScenarioHook.start
@@ -418,7 +464,9 @@ describe('CucumberAdapter executes hooks using 3rd party libs (q library)', () =
     describe('beforeStep', () => {
         let beforeStepHook
 
-        before(() => beforeStepHook = global.___wdio.beforeStep)
+        before(() => {
+            beforeStepHook = global.___wdio.beforeStep
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = beforeStepHook.end - beforeStepHook.start
@@ -429,7 +477,9 @@ describe('CucumberAdapter executes hooks using 3rd party libs (q library)', () =
     describe('beforeCommand', () => {
         let beforeCommandHook
 
-        before(() => beforeCommandHook = global.___wdio.beforeCommand)
+        before(() => {
+            beforeCommandHook = global.___wdio.beforeCommand
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = beforeCommandHook.end - beforeCommandHook.start
@@ -440,7 +490,9 @@ describe('CucumberAdapter executes hooks using 3rd party libs (q library)', () =
     describe('afterCommand', () => {
         let afterCommandHook
 
-        before(() => afterCommandHook = global.___wdio.afterCommand)
+        before(() => {
+            afterCommandHook = global.___wdio.afterCommand
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = afterCommandHook.end - afterCommandHook.start
@@ -451,7 +503,9 @@ describe('CucumberAdapter executes hooks using 3rd party libs (q library)', () =
     describe('afterStep', () => {
         let afterStepHook
 
-        before(() => afterStepHook = global.___wdio.afterStep)
+        before(() => {
+            afterStepHook = global.___wdio.afterStep
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = afterStepHook.end - afterStepHook.start
@@ -462,7 +516,9 @@ describe('CucumberAdapter executes hooks using 3rd party libs (q library)', () =
     describe('afterScenario', () => {
         let afterScenarioHook
 
-        before(() => afterScenarioHook = global.___wdio.afterScenario)
+        before(() => {
+            afterScenarioHook = global.___wdio.afterScenario
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = afterScenarioHook.end - afterScenarioHook.start
@@ -473,7 +529,9 @@ describe('CucumberAdapter executes hooks using 3rd party libs (q library)', () =
     describe('afterFeature', () => {
         let afterFeatureHook
 
-        before(() => afterFeatureHook = global.___wdio.afterFeature)
+        before(() => {
+            afterFeatureHook = global.___wdio.afterFeature
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = afterFeatureHook.end - afterFeatureHook.start
@@ -484,7 +542,9 @@ describe('CucumberAdapter executes hooks using 3rd party libs (q library)', () =
     describe('after', () => {
         let afterHook
 
-        before(() => afterHook = global.___wdio.after)
+        before(() => {
+            afterHook = global.___wdio.after
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = afterHook.end - afterHook.start
@@ -563,7 +623,9 @@ describe('CucumberAdapter executes async hooks', () => {
     describe('before', () => {
         let beforeHook
 
-        before(() => beforeHook = global._____wdio.before)
+        before(() => {
+            beforeHook = global._____wdio.before
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = beforeHook.end - beforeHook.start
@@ -574,7 +636,9 @@ describe('CucumberAdapter executes async hooks', () => {
     describe('beforeFeature', () => {
         let beforeFeatureHook
 
-        before(() => beforeFeatureHook = global._____wdio.beforeFeature)
+        before(() => {
+            beforeFeatureHook = global._____wdio.beforeFeature
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = beforeFeatureHook.end - beforeFeatureHook.start
@@ -585,7 +649,9 @@ describe('CucumberAdapter executes async hooks', () => {
     describe('beforeScenario', () => {
         let beforeScenarioHook
 
-        before(() => beforeScenarioHook = global._____wdio.beforeScenario)
+        before(() => {
+            beforeScenarioHook = global._____wdio.beforeScenario
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = beforeScenarioHook.end - beforeScenarioHook.start
@@ -596,7 +662,9 @@ describe('CucumberAdapter executes async hooks', () => {
     describe('beforeStep', () => {
         let beforeStepHook
 
-        before(() => beforeStepHook = global._____wdio.beforeStep)
+        before(() => {
+            beforeStepHook = global._____wdio.beforeStep
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = beforeStepHook.end - beforeStepHook.start
@@ -607,7 +675,9 @@ describe('CucumberAdapter executes async hooks', () => {
     describe('afterStep', () => {
         let afterStepHook
 
-        before(() => afterStepHook = global._____wdio.afterStep)
+        before(() => {
+            afterStepHook = global._____wdio.afterStep
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = afterStepHook.end - afterStepHook.start
@@ -618,7 +688,9 @@ describe('CucumberAdapter executes async hooks', () => {
     describe('afterScenario', () => {
         let afterScenarioHook
 
-        before(() => afterScenarioHook = global._____wdio.afterScenario)
+        before(() => {
+            afterScenarioHook = global._____wdio.afterScenario
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = afterScenarioHook.end - afterScenarioHook.start
@@ -629,7 +701,9 @@ describe('CucumberAdapter executes async hooks', () => {
     describe('afterFeature', () => {
         let afterFeatureHook
 
-        before(() => afterFeatureHook = global._____wdio.afterFeature)
+        before(() => {
+            afterFeatureHook = global._____wdio.afterFeature
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = afterFeatureHook.end - afterFeatureHook.start
@@ -640,7 +714,9 @@ describe('CucumberAdapter executes async hooks', () => {
     describe('after', () => {
         let afterHook
 
-        before(() => afterHook = global._____wdio.after)
+        before(() => {
+            afterHook = global._____wdio.after
+        })
 
         it('should defer execution until promise was resolved', () => {
             let duration = afterHook.end - afterHook.start
