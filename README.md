@@ -107,7 +107,7 @@ Type: `String[]`<br>
 Default: `[]`
 
 ### require
-Require files/dir before executing features.
+Require files/dir before executing features. If you apply a path don't use globbing as it is not supported by Cucumber. Instead just reference the directory where you step definitions are located (e.g. `/path/to/definitions` instead of `/path/to/definitions/*`).
 
 Type: `String[]`<br>
 Default: `[]`
