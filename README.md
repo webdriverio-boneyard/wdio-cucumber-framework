@@ -126,7 +126,9 @@ Default: `false`
 
 ### tags
 Only execute the features or scenarios with tags matching the expression. Note that untagged
-features will still spawn a Selenium session (see issue [webdriverio/webdriverio#1247](https://github.com/webdriverio/webdriverio/issues/1247)). The recommended way to specify a subset of feature files is to use [suites](http://webdriver.io/guide/testrunner/organizesuite.html#Group-Test-Specs).
+features will still spawn a Selenium session (see issue [webdriverio/webdriverio#1247](https://github.com/webdriverio/webdriverio/issues/1247)).
+The recommended way to specify a subset of feature files is to use [suites](http://webdriver.io/guide/testrunner/organizesuite.html#Group-Test-Specs).
+Using `['@t1,@t2']` will run scenarios tagged with `@t1` OR `@t2` whilst `['@t1', '@t2']` will run those with `@t1` AND `@t2`.
 
 Type: `String[]`<br>
 Default: `[]`
