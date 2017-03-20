@@ -1,6 +1,8 @@
 WDIO Cucumber Framework Adapter
 ===============================
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/webdriverio/wdio-cucumber-framework.svg)](https://greenkeeper.io/)
+
 [![Build Status](https://travis-ci.org/webdriverio/wdio-cucumber-framework.svg?branch=master)](https://travis-ci.org/webdriverio/wdio-cucumber-framework) [![Code Climate](https://codeclimate.com/github/webdriverio/wdio-cucumber-framework/badges/gpa.svg)](https://codeclimate.com/github/webdriverio/wdio-cucumber-framework) [![Test Coverage](https://codeclimate.com/github/webdriverio/wdio-cucumber-framework/badges/coverage.svg)](https://codeclimate.com/github/webdriverio/wdio-cucumber-framework/coverage) [![dependencies Status](https://david-dm.org/webdriverio/wdio-cucumber-framework/status.svg)](https://david-dm.org/webdriverio/wdio-cucumber-framework)
 
 ***
