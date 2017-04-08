@@ -1,4 +1,5 @@
 import path from 'path'
+import q from 'q'
 
 global.___wdio = {
     onPrepare: {},
@@ -14,8 +15,6 @@ global.___wdio = {
     after: {},
     onComplete: {}
 }
-
-import q from 'q'
 
 export default {
     capabilities: {
