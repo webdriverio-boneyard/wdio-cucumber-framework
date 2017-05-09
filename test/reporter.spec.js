@@ -7,7 +7,7 @@ import CucumberReporter from '../lib/reporter'
 let send
 let reporter
 
-function getEvent (name, status = 'pass', line = Math.round(Math.random() * 100)) {
+function getEvent (name, status = 'pass', line = Math.round(Math.random() * 100), tags = []) {
     return {
         getPayloadItem: () => ({
             getName: () => name,
@@ -16,7 +16,8 @@ function getEvent (name, status = 'pass', line = Math.round(Math.random() * 100)
             getStep: () => getEvent('step', status, line++).getPayloadItem(),
             getStatus: () => status,
             getFailureException: () => new Error('foobar-error'),
-            getLine: () => line
+            getLine: () => line,
+            getTags: () => tags.map(tag => ({ getName: () => tag }))
         })
     }
 }
@@ -125,6 +126,42 @@ describe('cucumber reporter', () => {
     describe('provides a fail counter', () => {
         it('should have right fail count at the end', () => {
             reporter.failedCount.should.be.exactly(1)
+        })
+    })
+
+    describe('tags in title', () => {
+        before(() => {
+            reporter = new CucumberReporter({}, {
+                tagsInTitle: true
+            }, '0-1', ['/foobar.js'])
+            send = reporter.send = sinon.stub()
+            send.returns(true)
+        })
+
+        it('should add tags on handleBeforeFeatureEvent', () => {
+            reporter.handleBeforeFeatureEvent(getEvent('feature', 'pass', 129, ['@tag_1', '@tag_2']), NOOP)
+
+            send.calledWithMatch({
+                event: 'suite:start',
+                type: 'suite',
+                title: '@tag_1, @tag_2: feature',
+                uid: 'feature129',
+                file: 'foobar2',
+                cid: '0-1'
+            }).should.be.true()
+        })
+
+        it('should add tags on handleBeforeScenarioEvent', () => {
+            reporter.handleBeforeScenarioEvent(getEvent('scenario', 'pass', 130, ['@tag_1']), NOOP)
+
+            send.calledWithMatch({
+                event: 'suite:start',
+                type: 'suite',
+                title: '@tag_1: scenario',
+                uid: 'scenario130',
+                file: 'foobar2',
+                cid: '0-1'
+            }).should.be.true()
         })
     })
 })
