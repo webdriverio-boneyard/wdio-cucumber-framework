@@ -16,7 +16,7 @@
     "test:ci": "run-s clean eslint test:cover",
     "test:unit": "mocha --compilers js:babel-core/register test/*.js",
     "test:cover": "babel-node ./node_modules/.bin/isparta cover --include 'lib/*.js' _mocha",
-    "prepublish": "npm prune && run-s build test",
+    "prepublish": "npm prune",
     "watch": "npm run compile -- --watch"
   },
   "repository": {
