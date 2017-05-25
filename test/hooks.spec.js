@@ -325,7 +325,6 @@ describe('CucumberAdapter executes hooks using WDIO commands', () => {
         })
 
         it('should defer execution until promise was resolved', () => {
-            console.log("Gozdecki: beforeStepHook",beforeStepHook);
             let duration = beforeStepHook.end - beforeStepHook.start
             duration.should.be.greaterThan(490)
         })
@@ -339,7 +338,6 @@ describe('CucumberAdapter executes hooks using WDIO commands', () => {
         })
 
         it('should defer execution until promise was resolved', () => {
-            console.log("Gozdecki: beforeCommandHook",beforeCommandHook);
             let duration = beforeCommandHook.end - beforeCommandHook.start
             duration.should.be.greaterThan(490)
         })

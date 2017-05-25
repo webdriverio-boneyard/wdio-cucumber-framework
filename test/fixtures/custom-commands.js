@@ -1,5 +1,5 @@
 import q from 'q'
-import defineSupportCode from 'cucumber'
+import { defineSupportCode } from 'cucumber'
 
 browser.addCommand('customWdio', function (a) {
     browser.pause(1000)

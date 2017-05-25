@@ -54,7 +54,6 @@ export default {
         return defer.promise
     },
     beforeStep: (...args) => {
-        console.log("running before step in q");
         global.___wdio.beforeStep.start = new Date().getTime()
         const defer = q.defer()
         setTimeout(() => {
@@ -64,7 +63,6 @@ export default {
         return defer.promise
     },
     beforeCommand: (...args) => {
-        console.log("running beforeCommand in q");
         global.___wdio.beforeCommand.start = new Date().getTime()
         const defer = q.defer()
         setTimeout(() => {
