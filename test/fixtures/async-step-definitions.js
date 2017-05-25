@@ -1,17 +1,23 @@
 var assert = require('assert')
+console.log("requiring async step definitions");
 
-module.exports = function () {
-    this.Given(/^I go on the website "([^"]*)"$/, (url) => {
+var {defineSupportCode} = require('cucumber');
+
+defineSupportCode(function({Given, When, Then}) {
+    console.log("running the define support code");
+    Given('I go on the website {stringInDoubleQuotes}', function(url) {
+        console.log("something ")
         return browser.url(url)
-    })
+    });
 
-    this.Then(/^I click on link "([^"]*)"$/, (selector) => {
+    When('I click on link {stringInDoubleQuotes}', function (selector) {
         return browser.click(selector)
-    })
 
-    this.Then(/^should the title of the page be "([^"]*)"$/, (expectedTitle) => {
+    });
+
+    Then('should the title of the page be {stringInDoubleQuotes}', function (expectedTitle) {
         return browser.getTitle().then((title) => {
             assert.equal(title, expectedTitle)
         })
-    })
-}
+    });
+});
