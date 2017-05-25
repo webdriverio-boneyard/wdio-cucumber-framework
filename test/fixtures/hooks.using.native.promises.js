@@ -13,6 +13,7 @@ export default {
     },
 
     before: (...args) => {
+        console.log("running before");
         global._wdio.before = {
             wasExecuted: true,
             start: new Date().getTime(),
@@ -27,6 +28,7 @@ export default {
         })
     },
     beforeFeature: (...args) => {
+        console.log("running beforeFeature GOZDECKI KURWA");
         global._wdio.beforeFeature = {
             wasExecuted: true,
             start: new Date().getTime(),
@@ -69,6 +71,7 @@ export default {
         })
     },
     beforeCommand: (...args) => {
+        console.log("running before command in native")
         global._wdio.beforeCommand = {
             wasExecuted: true,
             start: new Date().getTime(),

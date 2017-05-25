@@ -84,7 +84,7 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
 
         it('should contain right feature data', () => {
             let feature = beforeFeatureHook.args[0]
-            feature.getName().should.be.equal('Example feature')
+            feature.name.should.be.equal('Example feature')
         })
     })
 
@@ -106,7 +106,7 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
 
         it('should contain right scenario data', () => {
             let scenario = beforeScenarioHook.args[0]
-            scenario.getName().should.be.equal('Foo Bar')
+            scenario.name.should.be.equal('Foo Bar')
         })
     })
 
@@ -128,7 +128,7 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
 
         it('should contain right step data', () => {
             let step = beforeStepHook.args[0]
-            step.getName().should.be.equal(`should the title of the page be "Google"`)
+            step.name.should.be.equal(`should the title of the page be "Google"`)
         })
     })
 
@@ -192,8 +192,8 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
         })
 
         it('should contain right step data', () => {
-            let step = afterStepHook.args[0]
-            step.getStep().getName().should.be.equal(`should the title of the page be "Google"`)
+            let step = afterStepHook.args[0].step
+            step.name.should.be.equal(`should the title of the page be "Google"`)
         })
     })
 
@@ -215,7 +215,7 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
 
         it('should contain right scenario data', () => {
             let scenario = afterScenarioHook.args[0]
-            scenario.getName().should.be.equal('Foo Bar')
+            scenario.name.should.be.equal('Foo Bar')
         })
     })
 
@@ -237,7 +237,7 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
 
         it('should contain right feature data', () => {
             let feature = afterFeatureHook.args[0]
-            feature.getName().should.be.equal('Example feature')
+            feature.name.should.be.equal('Example feature')
         })
     })
 
@@ -325,6 +325,7 @@ describe('CucumberAdapter executes hooks using WDIO commands', () => {
         })
 
         it('should defer execution until promise was resolved', () => {
+            console.log("Gozdecki: beforeStepHook",beforeStepHook);
             let duration = beforeStepHook.end - beforeStepHook.start
             duration.should.be.greaterThan(490)
         })
@@ -338,6 +339,7 @@ describe('CucumberAdapter executes hooks using WDIO commands', () => {
         })
 
         it('should defer execution until promise was resolved', () => {
+            console.log("Gozdecki: beforeCommandHook",beforeCommandHook);
             let duration = beforeCommandHook.end - beforeCommandHook.start
             duration.should.be.greaterThan(490)
         })

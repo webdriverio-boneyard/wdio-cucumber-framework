@@ -41,11 +41,13 @@ export default {
         global.__wdio.beforeScenario.end = new Date().getTime()
     },
     beforeStep: (...args) => {
+        console.log("running before step in wdio");
         global.__wdio.beforeStep.start = new Date().getTime()
         browser.pause(500)
         global.__wdio.beforeStep.end = new Date().getTime()
     },
     beforeCommand: (...args) => {
+        console.log("running before command in wdio")
         global.__wdio.beforeCommand.start = new Date().getTime()
         browser.pause(500)
         global.__wdio.beforeCommand.end = new Date().getTime()
