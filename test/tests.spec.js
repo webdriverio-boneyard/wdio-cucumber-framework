@@ -43,7 +43,7 @@ describe('syncAsyncTest', () => {
             timeToExecute = new Date().getTime() - start
         })
 
-        it('should take the expected amount of time to execute suite', () => {
+        it('should take the expected amount of time to execute suite async', () => {
             timeToExecute.should.be.above(4500)
         })
     })
@@ -60,7 +60,7 @@ describe('syncAsyncTest', () => {
             timeToExecute = new Date().getTime() - start
         })
 
-        it('should take the expected amount of time to execute suite', () => {
+        it('should take the expected amount of time to execute suite sync/async', () => {
             timeToExecute.should.be.above(7000)
         })
     })

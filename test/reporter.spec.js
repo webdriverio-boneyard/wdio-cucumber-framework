@@ -7,18 +7,16 @@ import CucumberReporter from '../lib/reporter'
 let send
 let reporter
 
-function getEvent (name, status = 'pass', line = Math.round(Math.random() * 100), tags = []) {
+
+function getEvent (name, status = 'pass', line = Math.round(Math.random() * 100), tags = [], isStepInsideStep) {
     return {
-        getPayloadItem: () => ({
-            getName: () => name,
-            getUriOf: () => 'foobar',
-            getUri: () => 'foobar2',
-            getStep: () => getEvent('step', status, line++).getPayloadItem(),
-            getStatus: () => status,
-            getFailureException: () => new Error('foobar-error'),
-            getLine: () => line,
-            getTags: () => tags.map(tag => ({ getName: () => tag }))
-        })
+        line,
+        name,
+        status,
+        uri: 'foobar2',
+        step: isStepInsideStep ? null : getEvent('step', status, line++, [], true),
+        tags:  tags.map(tag => ({ name: tag })),
+            failureException: new Error('foobar-error'),
     }
 }
 
@@ -33,7 +31,8 @@ describe('cucumber reporter', () => {
 
     describe('emits messages for certain cucumber events', () => {
         it('should send proper data on handleBeforeFeatureEvent', () => {
-            reporter.handleBeforeFeatureEvent(getEvent('feature', 'pass', 123), NOOP)
+            reporter.handleBeforeFeature(getEvent('feature', 'pass', 123), NOOP)
+
             send.calledWithMatch({
                 event: 'suite:start',
                 type: 'suite',
@@ -44,7 +43,7 @@ describe('cucumber reporter', () => {
         })
 
         it('should send proper data on handleBeforeScenarioEvent', () => {
-            reporter.handleBeforeScenarioEvent(getEvent('scenario', 'pass', 124), NOOP)
+            reporter.handleBeforeScenario(getEvent('scenario', 'pass', 124), NOOP)
             send.calledWithMatch({
                 event: 'suite:start',
                 type: 'suite',
@@ -56,7 +55,7 @@ describe('cucumber reporter', () => {
         })
 
         it('should send proper data on handleBeforeStepEvent', () => {
-            reporter.handleBeforeStepEvent(getEvent('step', 'fail', 125), NOOP)
+            reporter.handleBeforeStep(getEvent('step', 'fail', 125), NOOP)
             send.calledWithMatch({
                 event: 'test:start',
                 type: 'test',
@@ -70,7 +69,7 @@ describe('cucumber reporter', () => {
         })
 
         it('should send proper data on handleStepResultEvent', () => {
-            reporter.handleStepResultEvent(getEvent('step', 'failed', 126), NOOP)
+            reporter.handleStepResult(getEvent('step', 'failed', 126), NOOP)
             send.calledWithMatch({
                 event: 'test:fail',
                 type: 'test',
@@ -84,7 +83,7 @@ describe('cucumber reporter', () => {
         })
 
         it('should send proper data on handleAfterScenarioEvent', () => {
-            reporter.handleAfterScenarioEvent(getEvent('scenario', null, 127), NOOP)
+            reporter.handleAfterScenario(getEvent('scenario', null, 127), NOOP)
             send.calledWithMatch({
                 event: 'suite:end',
                 type: 'suite',
@@ -96,7 +95,7 @@ describe('cucumber reporter', () => {
         })
 
         it('should send proper data on handleAfterFeatureEvent', () => {
-            reporter.handleAfterFeatureEvent(getEvent('feature', null, 128), NOOP)
+            reporter.handleAfterFeature(getEvent('feature', null, 128), NOOP)
             send.calledWithMatch({
                 event: 'suite:end',
                 type: 'suite',
@@ -139,7 +138,7 @@ describe('cucumber reporter', () => {
         })
 
         it('should add tags on handleBeforeFeatureEvent', () => {
-            reporter.handleBeforeFeatureEvent(getEvent('feature', 'pass', 129, ['@tag_1', '@tag_2']), NOOP)
+            reporter.handleBeforeFeature(getEvent('feature', 'pass', 129, ['@tag_1', '@tag_2']), NOOP)
 
             send.calledWithMatch({
                 event: 'suite:start',
@@ -152,7 +151,7 @@ describe('cucumber reporter', () => {
         })
 
         it('should add tags on handleBeforeScenarioEvent', () => {
-            reporter.handleBeforeScenarioEvent(getEvent('scenario', 'pass', 130, ['@tag_1']), NOOP)
+            reporter.handleBeforeScenario(getEvent('scenario', 'pass', 130, ['@tag_1']), NOOP)
 
             send.calledWithMatch({
                 event: 'suite:start',
