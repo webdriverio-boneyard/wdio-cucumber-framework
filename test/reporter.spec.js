@@ -7,7 +7,7 @@ import CucumberReporter from '../lib/reporter'
 let send
 let reporter
 
-function getEvent (name, status = 'pass', line = Math.round(Math.random() * 100), tags = []) {
+function getEvent (name, status = 'pass', line = Math.round(Math.random() * 100), tags = [], err = new Error('foobar-error')) {
     return {
         getPayloadItem: () => ({
             getName: () => name,
@@ -15,7 +15,7 @@ function getEvent (name, status = 'pass', line = Math.round(Math.random() * 100)
             getUri: () => 'foobar2',
             getStep: () => getEvent('step', status, line++).getPayloadItem(),
             getStatus: () => status,
-            getFailureException: () => new Error('foobar-error'),
+            getFailureException: () => err,
             getLine: () => line,
             getTags: () => tags.map(tag => ({ getName: () => tag }))
         })
@@ -69,7 +69,7 @@ describe('cucumber reporter', () => {
             }).should.be.true()
         })
 
-        it('should send proper data on handleStepResultEvent', () => {
+        it('should send proper data on handleStepResultEvent for error of error type', () => {
             reporter.handleStepResultEvent(getEvent('step', 'failed', 126), NOOP)
             send.calledWithMatch({
                 event: 'test:fail',
@@ -81,6 +81,20 @@ describe('cucumber reporter', () => {
                 file: 'foobar2'
             }).should.be.true()
             send.args[send.args.length - 1][0].err.message.should.be.equal('foobar-error')
+        })
+
+        it('should send proper data on handleStepResultEvent for error of string type', () => {
+            reporter.handleStepResultEvent(getEvent('step', 'failed', 126, [], 'foo-error'), NOOP)
+            send.calledWithMatch({
+                event: 'test:fail',
+                type: 'test',
+                title: 'step',
+                cid: '0-1',
+                parent: 'scenario124',
+                uid: 'step126',
+                file: 'foobar2'
+            }).should.be.true()
+            send.args[send.args.length - 1][0].err.message.should.be.equal('foo-error')
         })
 
         it('should send proper data on handleAfterScenarioEvent', () => {
@@ -125,7 +139,7 @@ describe('cucumber reporter', () => {
 
     describe('provides a fail counter', () => {
         it('should have right fail count at the end', () => {
-            reporter.failedCount.should.be.exactly(1)
+            reporter.failedCount.should.be.exactly(2)
         })
     })
 
