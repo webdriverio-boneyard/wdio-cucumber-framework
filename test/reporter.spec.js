@@ -7,7 +7,6 @@ import CucumberReporter from '../lib/reporter'
 let send
 let reporter
 
-
 function getEvent (name, status = 'pass', line = Math.round(Math.random() * 100), tags = [], isStepInsideStep) {
     return {
         line,
@@ -15,8 +14,8 @@ function getEvent (name, status = 'pass', line = Math.round(Math.random() * 100)
         status,
         uri: 'foobar2',
         step: isStepInsideStep ? null : getEvent('step', status, line++, [], true),
-        tags:  tags.map(tag => ({ name: tag })),
-            failureException: new Error('foobar-error'),
+        tags: tags.map(tag => ({ name: tag })),
+        failureException: new Error('foobar-error')
     }
 }
 
