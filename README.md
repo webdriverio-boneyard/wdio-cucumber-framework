@@ -1,6 +1,8 @@
 WDIO Cucumber Framework Adapter
 ===============================
 
+[![Build Status](https://circleci.com/gh/lgandecki/wdio-cucumber2-framework.svg?style=svg)](https://circleci.com/gh/lgandecki/wdio-cucumber2-framework) [![Code Climate](https://codeclimate.com/github/lgandecki/wdio-cucumber2-framework/badges/gpa.svg)](https://codeclimate.com/github/lgandecki/wdio-cucumber2-framework) [![Test Coverage](https://codeclimate.com/github/lgandecki/wdio-cucumber2-framework/badges/coverage.svg)](https://codeclimate.com/github/lgandecki/wdio-cucumber2-framework/coverage)
+
 ***
 
 > A WebdriverIO plugin. Adapter for CucumberJS 2 testing framework.
