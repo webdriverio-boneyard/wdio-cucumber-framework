@@ -7,15 +7,15 @@ import CucumberReporter from '../lib/reporter'
 let send
 let reporter
 
-function getEvent (name, status = 'pass', line = Math.round(Math.random() * 100), tags = [], isStepInsideStep) {
+function getEvent (name, status = 'pass', line = Math.round(Math.random() * 100), tags = [], err = new Error('foobar-error'), isStepInsideStep) {
     return {
         line,
         name,
         status,
         uri: 'foobar2',
-        step: isStepInsideStep ? null : getEvent('step', status, line++, [], true),
+        step: isStepInsideStep ? null : getEvent('step', status, line++, [], new Error('foobar-error'), true),
         tags: tags.map(tag => ({ name: tag })),
-        failureException: new Error('foobar-error')
+        failureException: err
     }
 }
 
@@ -67,7 +67,7 @@ describe('cucumber reporter', () => {
             }).should.be.true()
         })
 
-        it('should send proper data on handleStepResultEvent', () => {
+        it('should send proper data on handleStepResultEvent for error of error type', () => {
             reporter.handleStepResult(getEvent('step', 'failed', 126), NOOP)
             send.calledWithMatch({
                 event: 'test:fail',
@@ -79,6 +79,20 @@ describe('cucumber reporter', () => {
                 file: 'foobar2'
             }).should.be.true()
             send.args[send.args.length - 1][0].err.message.should.be.equal('foobar-error')
+        })
+
+        it('should send proper data on handleStepResultEvent for error of string type', () => {
+            reporter.handleStepResult(getEvent('step', 'failed', 126, [], 'foo-error'), NOOP)
+            send.calledWithMatch({
+                event: 'test:fail',
+                type: 'test',
+                title: 'step',
+                cid: '0-1',
+                parent: 'scenario124',
+                uid: 'step126',
+                file: 'foobar2'
+            }).should.be.true()
+            send.args[send.args.length - 1][0].err.message.should.be.equal('foo-error')
         })
 
         it('should send proper data on handleAfterScenarioEvent', () => {
@@ -123,7 +137,7 @@ describe('cucumber reporter', () => {
 
     describe('provides a fail counter', () => {
         it('should have right fail count at the end', () => {
-            reporter.failedCount.should.be.exactly(1)
+            reporter.failedCount.should.be.exactly(2)
         })
     })
 
