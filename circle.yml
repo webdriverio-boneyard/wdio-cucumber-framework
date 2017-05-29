@@ -1,0 +1,11 @@
+machine:
+  node:
+    version: 6.5.0
+
+dependencies:
+  cache_directories:
+    - "node_modules"
+test:
+  override:
+    - npm test
+    - ./node_modules/.bin/codeclimate-test-reporter < ./coverage/lcov.info
