@@ -10,7 +10,7 @@ jobs:
         key: dependency-cache-{{ checksum "package.json" }}
     - run:
         name: install-npm
-        command: npm install
+        command: yarn install
     - save_cache:
         key: dependency-cache-{{ checksum "package.json" }}
         paths:
