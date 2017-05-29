@@ -1,22 +1,20 @@
 WDIO Cucumber Framework Adapter
 ===============================
 
-[![Build Status](https://circleci.com/gh/lgandecki/wdio-cucumber2-framework.svg?style=svg)](https://circleci.com/gh/lgandecki/wdio-cucumber2-framework) [![Code Climate](https://codeclimate.com/github/lgandecki/wdio-cucumber2-framework/badges/gpa.svg)](https://codeclimate.com/github/lgandecki/wdio-cucumber2-framework) [![Test Coverage](https://codeclimate.com/github/lgandecki/wdio-cucumber2-framework/badges/coverage.svg)](https://codeclimate.com/github/lgandecki/wdio-cucumber2-framework/coverage)
+[![Build Status](https://travis-ci.org/webdriverio/wdio-cucumber-framework.svg?branch=master)](https://travis-ci.org/webdriverio/wdio-cucumber-framework) [![Code Climate](https://codeclimate.com/github/webdriverio/wdio-cucumber-framework/badges/gpa.svg)](https://codeclimate.com/github/webdriverio/wdio-cucumber-framework) [![Test Coverage](https://codeclimate.com/github/webdriverio/wdio-cucumber-framework/badges/coverage.svg)](https://codeclimate.com/github/webdriverio/wdio-cucumber-framework/coverage) [![dependencies Status](https://david-dm.org/webdriverio/wdio-cucumber-framework/status.svg)](https://david-dm.org/webdriverio/wdio-cucumber-framework)
 
 ***
 
-> A WebdriverIO plugin. Adapter for CucumberJS 2 testing framework.
-
-This is based off the wdio-cucumber-framework, rewrote to work with the second version of CucumberJS.
+> A WebdriverIO plugin. Adapter for CucumberJS testing framework.
 
 ## Installation
 
-The easiest way is to keep `wdio-cucumber2-framework` as a devDependency in your `package.json`.
+The easiest way is to keep `wdio-cucumber-framework` as a devDependency in your `package.json`.
 
 ```json
 {
   "devDependencies": {
-    "wdio-cucumber2-framework": "~0.0.1"
+    "wdio-cucumber-framework": "~1.0.0"
   }
 }
 ```
@@ -24,7 +22,7 @@ The easiest way is to keep `wdio-cucumber2-framework` as a devDependency in your
 You can simple do it by:
 
 ```bash
-npm install wdio-cucumber2-framework --save-dev
+npm install wdio-cucumber-framework --save-dev
 ```
 
 Instructions on how to install `WebdriverIO` can be found [here.](http://webdriver.io/guide/getstarted/install.html)
@@ -38,7 +36,7 @@ Following code shows the default wdio test runner configuration...
 // wdio.conf.js
 module.exports = {
   // ...
-  framework: 'cucumber2'
+  framework: 'cucumber'
   cucumberOpts: {
     timeout: 10000
   }
@@ -132,7 +130,7 @@ Type: `Boolean`<br>
 Default: `false`
 
 ### failAmbiguousDefinitions
-**Please note that this is a wdio-cucumber2-framework specifc option and not recognized by cucumber-js itself**
+**Please note that this is a wdio-cucumber-framework specifc option and not recognized by cucumber-js itself**
 Treat ambiguous definitions as errors.
 
 Type: `Boolean`<br>

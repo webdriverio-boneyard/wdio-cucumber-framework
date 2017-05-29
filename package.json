@@ -1,6 +1,6 @@
 {
-  "name": "wdio-cucumber2-framework",
-  "version": "0.0.1",
+  "name": "wdio-cucumber-framework",
+  "version": "1.0.0-beta.0",
   "description": "A WebdriverIO plugin. Adapter for Cucumber2 testing framework.",
   "main": "build/adapter.js",
   "scripts": {
@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lgandecki/wdio-cucumber2-framework.git"
+    "url": "git+https://github.com/webdriverio/wdio-cucumber-framework.git"
   },
   "keywords": [
     "cucumber",
@@ -34,9 +34,9 @@
   "author": "Christian Bromann <christian@saucelabs.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/webdriverio/wdio-cucumber2-framework/issues"
+    "url": "https://github.com/webdriverio/wdio-cucumber-framework/issues"
   },
-  "homepage": "https://github.com/webdriverio/wdio-cucumber2-framework#readme",
+  "homepage": "https://github.com/webdriverio/wdio-cucumber-framework#readme",
   "dependencies": {
     "babel-runtime": "~6.23.0",
     "cucumber": "lgandecki/cucumber-js#passOptionsToFunctionWrapperNPM",
@@ -78,7 +78,7 @@
     }
   },
   "contributors": [
-    "Łukasz Gandecki <lgandecki@thebrain.pro",
+    "Łukasz Gandecki <lgandecki@thebrain.pro>",
     "christian-bromann <mail@christian-bromann.com>",
     "Christian Bromann <github@christian-bromann.com>",
     "W. van Kuipers <wvankuipers@users.noreply.github.com>",
