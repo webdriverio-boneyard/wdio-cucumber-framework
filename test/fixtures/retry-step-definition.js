@@ -8,7 +8,7 @@ let lastCommand
 global.syncAsync = {}
 
 defineSupportCode(function ({Given, When, Then}) {
-    Given('I go on the website {stringInDoubleQuotes} that can fail one time', { retry: 1 }, (url) => {
+    Given('I go on the website {stringInDoubleQuotes} that can fail one time', {wrapperOptions: {retry: 1}}, (url) => {
         let res = browser.url(url)
         if (retryTest !== 0) {
             retryTest--
@@ -21,7 +21,7 @@ defineSupportCode(function ({Given, When, Then}) {
         retryTest = parseInt(cnt, 10)
     })
 
-    Given('I go on the website {stringInDoubleQuotes} the async way', { retry: 3 }, function async (url) {
+    Given('I go on the website {stringInDoubleQuotes} the async way', {wrapperOptions: {retry: 3}}, function async (url) {
         return browser.url(url).then((res) => {
             if (retryTest !== 0) {
                 retryTest--
@@ -31,7 +31,7 @@ defineSupportCode(function ({Given, When, Then}) {
         })
     })
 
-    Then('should the title of the page be {stringInDoubleQuotes}', { retry: 2 }, (expectedTitle) => {
+    Then('should the title of the page be {stringInDoubleQuotes}', {wrapperOptions: {retry: 2}}, (expectedTitle) => {
         let title = browser.getTitle()
         if (retryTest !== 0) {
             retryTest--
@@ -41,7 +41,7 @@ defineSupportCode(function ({Given, When, Then}) {
         lastCommand = 'getTitle'
     })
 
-    Then('I click on link {stringInDoubleQuotes} the async way', { retry: 2 }, function async (selector) {
+    Then('I click on link {stringInDoubleQuotes} the async way', {wrapperOptions: {retry: 2}}, function async (selector) {
         if (retryTest !== 0) {
             retryTest--
             throw new Error('FLAKE!')

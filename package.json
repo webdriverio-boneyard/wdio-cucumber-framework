@@ -1,6 +1,6 @@
 {
-  "name": "wdio-cucumber-framework",
-  "version": "1.0.0-beta.0",
+  "name": "wdio-cucumber2-framework",
+  "version": "0.0.4",
   "description": "A WebdriverIO plugin. Adapter for Cucumber2 testing framework.",
   "main": "build/adapter.js",
   "scripts": {
@@ -39,7 +39,7 @@
   "homepage": "https://github.com/webdriverio/wdio-cucumber-framework#readme",
   "dependencies": {
     "babel-runtime": "~6.23.0",
-    "cucumber": "lgandecki/cucumber-js#passOptionsToFunctionWrapperNPM",
+    "cucumber": "^2.3.1",
     "mockery": "^2.0.0",
     "wdio-sync": "0.6.14"
   },

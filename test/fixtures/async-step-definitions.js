@@ -3,7 +3,7 @@ var assert = require('assert')
 var {defineSupportCode} = require('cucumber')
 
 defineSupportCode(function ({Given, When, Then}) {
-    Given('I go on the website {stringInDoubleQuotes}', {retry: 2}, function (url) {
+    Given('I go on the website {stringInDoubleQuotes}', {wrapperOptions: {retry: 2}}, function (url) {
         return browser.url(url)
     })
 
