@@ -5,7 +5,7 @@ WDIO Cucumber Framework Adapter
 
 ***
 
-> A WebdriverIO plugin. Adapter for CucumberJS testing framework.
+> A WebdriverIO plugin. Adapter for CucumberJS v2 testing framework. To use v1 install this package with latest version v0.3.1.
 
 ## Installation
 
