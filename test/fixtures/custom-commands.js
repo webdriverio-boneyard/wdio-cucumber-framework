@@ -1,4 +1,5 @@
 import q from 'q'
+import { defineSupportCode } from 'cucumber'
 
 browser.addCommand('customWdio', function (a) {
     browser.pause(1000)
@@ -54,52 +55,52 @@ browser.addCommand('customHandleWdioAsPromise', function async (a) {
     }))
 })
 
-module.exports = function () {
-    this.Then(/^custom wdio$/, () => {
+defineSupportCode(function ({Given, When, Then}) {
+    Then('custom wdio', () => {
         global.____wdio.customWdio.start = new Date().getTime()
         browser.customWdio(1).should.be.equal(2)
         global.____wdio.customWdio.end = new Date().getTime()
     })
 
-    this.Then(/^custom wdio promise$/, () => {
+    Then('custom wdio promise', () => {
         global.____wdio.customWdioPromise.start = new Date().getTime()
         browser.customWdioPromise(1).should.be.equal(2)
         global.____wdio.customWdioPromise.end = new Date().getTime()
     })
 
-    this.Then(/^custom native promise$/, () => {
+    Then('custom native promise', () => {
         global.____wdio.customNativePromise.start = new Date().getTime()
         browser.customNativePromise(1).should.be.equal(2)
         global.____wdio.customNativePromise.end = new Date().getTime()
     })
 
-    this.Then(/^custom q promise$/, () => {
+    Then('custom q promise', () => {
         global.____wdio.customQPromise.start = new Date().getTime()
         browser.customQPromise(1).should.be.equal(2)
         global.____wdio.customQPromise.end = new Date().getTime()
     })
 
-    this.Then(/^custom command wrapping custom wdio$/, () => {
+    Then('custom command wrapping custom wdio', () => {
         global.____wdio.customWrapWdio.start = new Date().getTime()
         browser.customWrapWdio(1).should.be.equal(3)
         global.____wdio.customWrapWdio.end = new Date().getTime()
     })
 
-    this.Then(/^custom command wrapping custom wdio promise$/, () => {
+    Then('custom command wrapping custom wdio promise', () => {
         global.____wdio.customWrapWdioPromise.start = new Date().getTime()
         browser.customWrapWdioPromise(1).should.be.equal(3)
         global.____wdio.customWrapWdioPromise.end = new Date().getTime()
     })
 
-    this.Then(/^custom command wrapping two native promise commands$/, () => {
+    Then('custom command wrapping two native promise commands', () => {
         global.____wdio.customWrapTwoPromises.start = new Date().getTime()
         browser.customWrapTwoPromises(1).should.be.equal(3)
         global.____wdio.customWrapTwoPromises.end = new Date().getTime()
     })
 
-    this.Then(/^custom command wrapping wdio command treated as promise resolves$/, () => {
+    Then('custom command wrapping wdio command treated as promise resolves', () => {
         global.____wdio.customHandleWdioAsPromise.start = new Date().getTime()
         browser.customHandleWdioAsPromise(1).should.be.equal(3)
         global.____wdio.customHandleWdioAsPromise.end = new Date().getTime()
     })
-}
+})

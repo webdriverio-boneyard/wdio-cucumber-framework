@@ -5,7 +5,7 @@ WDIO Cucumber Framework Adapter
 
 ***
 
-> A WebdriverIO plugin. Adapter for CucumberJS testing framework.
+> A WebdriverIO plugin. Adapter for CucumberJS v2 testing framework. To use v1 install this package with latest version v0.3.1.
 
 ## Installation
 
@@ -14,7 +14,7 @@ The easiest way is to keep `wdio-cucumber-framework` as a devDependency in your 
 ```json
 {
   "devDependencies": {
-    "wdio-cucumber-framework": "~0.2.0"
+    "wdio-cucumber-framework": "~1.0.0"
   }
 }
 ```
@@ -27,23 +27,6 @@ npm install wdio-cucumber-framework --save-dev
 
 Instructions on how to install `WebdriverIO` can be found [here.](http://webdriver.io/guide/getstarted/install.html)
 
-### Install Cucumber
-
-Note that `cucumber` is defined as a peer dependency so make sure it is installed in your project as well.
-
-```json
-{
-  "devDependencies": {
-    "cucumber": "~1.2.0"
-  }
-}
-```
-
-You can simply do it by:
-
-```bash
-npm install cucumber --save-dev
-```
 
 ## Configuration
 

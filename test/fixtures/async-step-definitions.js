@@ -1,17 +1,19 @@
 var assert = require('assert')
 
-module.exports = function () {
-    this.Given(/^I go on the website "([^"]*)"$/, (url) => {
+var {defineSupportCode} = require('cucumber')
+
+defineSupportCode(function ({Given, When, Then}) {
+    Given('I go on the website {stringInDoubleQuotes}', {wrapperOptions: {retry: 2}}, function (url) {
         return browser.url(url)
     })
 
-    this.Then(/^I click on link "([^"]*)"$/, (selector) => {
+    When('I click on link {stringInDoubleQuotes}', function (selector) {
         return browser.click(selector)
     })
 
-    this.Then(/^should the title of the page be "([^"]*)"$/, (expectedTitle) => {
+    Then('should the title of the page be {stringInDoubleQuotes}', function (expectedTitle) {
         return browser.getTitle().then((title) => {
             assert.equal(title, expectedTitle)
         })
     })
-}
+})

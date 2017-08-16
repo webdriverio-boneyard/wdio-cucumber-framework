@@ -1,7 +1,7 @@
 {
   "name": "wdio-cucumber-framework",
-  "version": "0.3.1",
-  "description": "A WebdriverIO plugin. Adapter for Cucumber testing framework.",
+  "version": "1.0.0-beta.0",
+  "description": "A WebdriverIO plugin. Adapter for Cucumber2 testing framework.",
   "main": "build/adapter.js",
   "scripts": {
     "build": "run-s clean compile",
@@ -39,7 +39,8 @@
   "homepage": "https://github.com/webdriverio/wdio-cucumber-framework#readme",
   "dependencies": {
     "babel-runtime": "~6.23.0",
-    "cucumber": "~1.3.1",
+    "cucumber": "^2.3.1",
+    "mockery": "^2.0.0",
     "wdio-sync": "0.6.14"
   },
   "devDependencies": {
@@ -77,6 +78,7 @@
     }
   },
   "contributors": [
+    "Łukasz Gandecki <lgandecki@thebrain.pro>",
     "christian-bromann <mail@christian-bromann.com>",
     "Christian Bromann <github@christian-bromann.com>",
     "W. van Kuipers <wvankuipers@users.noreply.github.com>",
