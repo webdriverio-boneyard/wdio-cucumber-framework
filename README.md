@@ -90,7 +90,8 @@ Type: `String[]`<br>
 Default: `[]`
 
 ### require
-Require files/dir before executing features. If you apply a path don't use globbing as it is not supported by Cucumber. Instead just reference the directory where you step definitions are located (e.g. `/path/to/definitions` instead of `/path/to/definitions/*`).
+**Please note that globbing is not supported by Cucumber, paths must adhere to Node module resolution**
+Require files before executing features (e.g. `/path/to/module` or `/path/to/module-directory` where directory contains `index.js`).
 
 Type: `String[]`<br>
 Default: `[]`
