@@ -13,7 +13,7 @@
     "release:minor": "np minor",
     "release:major": "np major",
     "test": "run-s eslint test:unit build test:postadapter",
-    "test:ci": "run-s clean eslint test:cover test:postadapter",
+    "test:ci": "run-s clean eslint test:cover build test:postadapter",
     "test:unit": "mocha --compilers js:babel-core/register test/*.js 'test/!(adapter.spec).js'",
     "test:postadapter": "mocha test/adapter.spec.js",
     "test:cover": "babel-node ./node_modules/.bin/isparta cover --include 'lib/*.js' _mocha -- 'test/!(adapter.spec).js'",
