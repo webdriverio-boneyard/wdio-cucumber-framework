@@ -93,7 +93,7 @@ Default: `[]`
 Require files containing your step definitions before executing features. If you apply a path don't use globbing as it is not supported. Instead just reference the step definition files directly.
 
 Type: `String[]`<br>
-Default: `[]`
+Default: `[]`<br>
 Example: `[path.join(__dirname, 'step-definitions', 'my-steps.js')]`
 
 ### snippetSyntax
