@@ -50,7 +50,7 @@ describe('adapter', function () {
             global.browser = new WebdriverIO()
             global.browser.options = {}
             var adapter = new CucumberAdapter(0, conf, feature, {})
-            global.browser.getPrototype = function () { return WebdriverIO.prototype };
+            global.browser.getPrototype = function () { return WebdriverIO.prototype }
             return adapter.run().then((res) => {
                 res.should.equal(0, 'test ok!')
             })
