@@ -90,10 +90,11 @@ Type: `String[]`<br>
 Default: `[]`
 
 ### require
-Require files/dir before executing features. If you apply a path don't use globbing as it is not supported by Cucumber. Instead just reference the directory where you step definitions are located (e.g. `/path/to/definitions` instead of `/path/to/definitions/*`).
+Require files containing your step definitions before executing features. If you apply a path don't use globbing as it is not supported. Instead just reference the step definition files directly.
 
 Type: `String[]`<br>
 Default: `[]`
+Example: `[path.join(__dirname, 'step-definitions', 'my-steps.js')]`
 
 ### snippetSyntax
 Specify a custom snippet syntax.
