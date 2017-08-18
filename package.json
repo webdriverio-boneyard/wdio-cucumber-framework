@@ -16,7 +16,7 @@
     "test:ci": "run-s clean eslint test:cover test:postadapter",
     "test:unit": "mocha --compilers js:babel-core/register test/*.js 'test/!(adapter.spec).js'",
     "test:postadapter": "mocha test/adapter.spec.js",
-    "test:cover": "babel-node ./node_modules/.bin/isparta cover --include 'lib/*.js' _mocha",
+    "test:cover": "babel-node ./node_modules/.bin/isparta cover --include 'lib/*.js' _mocha -- 'test/!(adapter.spec).js'",
     "prepublish": "npm prune",
     "watch": "npm run compile -- --watch"
   },
