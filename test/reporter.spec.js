@@ -30,31 +30,33 @@ describe('cucumber reporter', () => {
 
     describe('emits messages for certain cucumber events', () => {
         it('should send proper data on handleBeforeFeatureEvent', () => {
-            reporter.handleBeforeFeature(getEvent('feature', 'pass', 123), NOOP)
+            reporter.handleBeforeFeature(getEvent('feature', 'pass', 123, ['abc']), NOOP)
 
             send.calledWithMatch({
                 event: 'suite:start',
                 type: 'suite',
                 uid: 'feature123',
                 file: 'foobar2',
-                cid: '0-1'
+                cid: '0-1',
+                tags: ['abc']
             }).should.be.true()
         })
 
         it('should send proper data on handleBeforeScenarioEvent', () => {
-            reporter.handleBeforeScenario(getEvent('scenario', 'pass', 124), NOOP)
+            reporter.handleBeforeScenario(getEvent('scenario', 'pass', 124, ['abc']), NOOP)
             send.calledWithMatch({
                 event: 'suite:start',
                 type: 'suite',
                 cid: '0-1',
                 parent: 'feature123',
                 uid: 'scenario124',
-                file: 'foobar2'
+                file: 'foobar2',
+                tags: ['abc']
             }).should.be.true()
         })
 
         it('should send proper data on handleBeforeStepEvent', () => {
-            reporter.handleBeforeStep(getEvent('step', 'fail', 125), NOOP)
+            reporter.handleBeforeStep(getEvent('step', 'fail', 125, ['abc']), NOOP)
             send.calledWithMatch({
                 event: 'test:start',
                 type: 'test',
@@ -63,12 +65,13 @@ describe('cucumber reporter', () => {
                 parent: 'scenario124',
                 uid: 'step125',
                 file: 'foobar2',
-                duration: 0
+                duration: 0,
+                tags: ['abc']
             }).should.be.true()
         })
 
         it('should send proper data on handleStepResultEvent for error of error type', () => {
-            reporter.handleStepResult(getEvent('step', 'failed', 126), NOOP)
+            reporter.handleStepResult(getEvent('step', 'failed', 126, ['abc']), NOOP)
             send.calledWithMatch({
                 event: 'test:fail',
                 type: 'test',
@@ -76,13 +79,14 @@ describe('cucumber reporter', () => {
                 cid: '0-1',
                 parent: 'scenario124',
                 uid: 'step126',
-                file: 'foobar2'
+                file: 'foobar2',
+                tags: ['abc']
             }).should.be.true()
             send.args[send.args.length - 1][0].err.message.should.be.equal('foobar-error')
         })
 
         it('should send proper data on handleStepResultEvent for error of string type', () => {
-            reporter.handleStepResult(getEvent('step', 'failed', 126, [], 'foo-error'), NOOP)
+            reporter.handleStepResult(getEvent('step', 'failed', 126, ['abc'], 'foo-error'), NOOP)
             send.calledWithMatch({
                 event: 'test:fail',
                 type: 'test',
@@ -90,25 +94,27 @@ describe('cucumber reporter', () => {
                 cid: '0-1',
                 parent: 'scenario124',
                 uid: 'step126',
-                file: 'foobar2'
+                file: 'foobar2',
+                tags: ['abc']
             }).should.be.true()
             send.args[send.args.length - 1][0].err.message.should.be.equal('foo-error')
         })
 
         it('should send proper data on handleAfterScenarioEvent', () => {
-            reporter.handleAfterScenario(getEvent('scenario', null, 127), NOOP)
+            reporter.handleAfterScenario(getEvent('scenario', null, 127, ['abc']), NOOP)
             send.calledWithMatch({
                 event: 'suite:end',
                 type: 'suite',
                 cid: '0-1',
                 parent: 'feature123',
                 uid: 'scenario127',
-                file: 'foobar2'
+                file: 'foobar2',
+                tags: ['abc']
             }).should.be.true()
         })
 
         it('should send proper data on handleAfterFeatureEvent', () => {
-            reporter.handleAfterFeature(getEvent('feature', null, 128), NOOP)
+            reporter.handleAfterFeature(getEvent('feature', null, 128, ['abc']), NOOP)
             send.calledWithMatch({
                 event: 'suite:end',
                 type: 'suite',
@@ -116,7 +122,8 @@ describe('cucumber reporter', () => {
                 file: 'foobar2',
                 uid: 'feature128',
                 cid: '0-1',
-                parent: null
+                parent: null,
+                tags: ['abc']
             }).should.be.true()
         })
     })
