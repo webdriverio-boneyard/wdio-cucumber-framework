@@ -38,7 +38,9 @@ describe('cucumber reporter', () => {
                 uid: 'feature123',
                 file: 'foobar2',
                 cid: '0-1',
-                tags: ['abc']
+                tags: [{
+                    name: 'abc'
+                }]
             }).should.be.true()
         })
 
@@ -51,7 +53,9 @@ describe('cucumber reporter', () => {
                 parent: 'feature123',
                 uid: 'scenario124',
                 file: 'foobar2',
-                tags: ['abc']
+                tags: [{
+                    name: 'abc'
+                }]
             }).should.be.true()
         })
 
@@ -66,7 +70,9 @@ describe('cucumber reporter', () => {
                 uid: 'step125',
                 file: 'foobar2',
                 duration: 0,
-                tags: ['abc']
+                tags: [{
+                    name: 'abc'
+                }]
             }).should.be.true()
         })
 
@@ -80,7 +86,9 @@ describe('cucumber reporter', () => {
                 parent: 'scenario124',
                 uid: 'step126',
                 file: 'foobar2',
-                tags: ['abc']
+                tags: [{
+                    name: 'abc'
+                }]
             }).should.be.true()
             send.args[send.args.length - 1][0].err.message.should.be.equal('foobar-error')
         })
@@ -95,7 +103,9 @@ describe('cucumber reporter', () => {
                 parent: 'scenario124',
                 uid: 'step126',
                 file: 'foobar2',
-                tags: ['abc']
+                tags: [{
+                    name: 'abc'
+                }]
             }).should.be.true()
             send.args[send.args.length - 1][0].err.message.should.be.equal('foo-error')
         })
@@ -109,7 +119,9 @@ describe('cucumber reporter', () => {
                 parent: 'feature123',
                 uid: 'scenario127',
                 file: 'foobar2',
-                tags: ['abc']
+                tags: [{
+                    name: 'abc'
+                }]
             }).should.be.true()
         })
 
@@ -123,7 +135,9 @@ describe('cucumber reporter', () => {
                 uid: 'feature128',
                 cid: '0-1',
                 parent: null,
-                tags: ['abc']
+                tags: [{
+                    name: 'abc'
+                }]
             }).should.be.true()
         })
     })
