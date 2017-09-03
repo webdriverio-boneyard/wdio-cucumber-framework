@@ -45,7 +45,7 @@ module.exports = {
 ```
 
 ## `cucumberOpts` Options
-
+    
 ### backtrace
 Show full backtrace for errors.
 
@@ -59,8 +59,22 @@ Type: `String[]`<br>
 Default: `*[]*`<br>
 Example: `['js:babel-core/register']`
 
+### failAmbiguousDefinitions
+**Please note that this is a wdio-cucumber-framework specifc option and not recognized by cucumber-js itself**
+Treat ambiguous definitions as errors.
+
+Type: `Boolean`<br>
+Default: `false`
+
 ### failFast
 Abort the run on first failure.
+
+Type: `Boolean`<br>
+Default: `false`
+
+### ignoreUndefinedDefinitions
+**Please note that this is a wdio-cucumber-framework specifc option and not recognized by cucumber-js itself**
+Treat undefined definitions as warnings.
 
 Type: `Boolean`<br>
 Default: `false`
@@ -70,18 +84,6 @@ Only execute the scenarios with name matching the expression (repeatable).
 
 Type: `REGEXP[]`<br>
 Default: `[]`
-
-### snippets
-Hide step definition snippets for pending steps.
-
-Type: `Boolean`<br>
-Default: `true`
-
-### source
-Hide source uris.
-
-Type: `Boolean`<br>
-Default: `true`
 
 ### profile
 Specify the profile to use.
@@ -102,20 +104,37 @@ Specify a custom snippet syntax.
 Type: `String`<br>
 Default: `undefined`
 
+### snippets
+Hide step definition snippets for pending steps.
+
+Type: `Boolean`<br>
+Default: `true`
+
+### source
+Hide source uris.
+
+Type: `Boolean`<br>
+Default: `true`
+
 ### strict
 Fail if there are any undefined or pending steps
 
 Type: `Boolean`<br>
 Default: `false`
 
-### tags
+### tagExpression
 Only execute the features or scenarios with tags matching the expression. Note that untagged
 features will still spawn a Selenium session (see issue [webdriverio/webdriverio#1247](https://github.com/webdriverio/webdriverio/issues/1247)).
-The recommended way to specify a subset of feature files is to use [suites](http://webdriver.io/guide/testrunner/organizesuite.html#Group-Test-Specs).
-Using `['@t1,@t2']` will run scenarios tagged with `@t1` OR `@t2` whilst `['@t1', '@t2']` will run those with `@t1` AND `@t2`.
+Please see the [Cucumber documentation](https://docs.cucumber.io/tag-expressions/) for more details.
 
-Type: `String[]`<br>
-Default: `[]`
+Type: `String`<br>
+Default: ``
+
+### tagsInTitle 
+Add cucumber tags to feature or scenario name
+
+Type: `Boolean[]`<br>
+Default: `false`
 
 ### timeout
 Timeout in milliseconds for step definitions.
@@ -123,19 +142,6 @@ Timeout in milliseconds for step definitions.
 Type: `Number`<br>
 Default: `30000`
 
-### ignoreUndefinedDefinitions
-**Please note that this is a wdio-cucumber-framework specifc option and not recognized by cucumber-js itself**
-Treat undefined definitions as warnings.
-
-Type: `Boolean`<br>
-Default: `false`
-
-### failAmbiguousDefinitions
-**Please note that this is a wdio-cucumber-framework specifc option and not recognized by cucumber-js itself**
-Treat ambiguous definitions as errors.
-
-Type: `Boolean`<br>
-Default: `false`
 
 ## Development
 
