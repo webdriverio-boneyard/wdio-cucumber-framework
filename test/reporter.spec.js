@@ -23,7 +23,7 @@ const NOOP = () => {}
 
 describe('cucumber reporter', () => {
     before(() => {
-        reporter = new CucumberReporter({}, {}, '0-1', ['/foobar.js'])
+        reporter = new CucumberReporter({}, {failAmbiguousDefinitions: true}, '0-1', ['/foobar.js'])
         send = reporter.send = sinon.stub()
         send.returns(true)
     })
@@ -110,6 +110,32 @@ describe('cucumber reporter', () => {
             send.args[send.args.length - 1][0].err.message.should.be.equal('foo-error')
         })
 
+        it('should send proper data on handleStepResultEvent for ambiguous step error', () => {
+            const event = getEvent('step', 'ambiguous', 131, [])
+            event.ambiguousStepDefinitions = [
+                {line: 5, pattern: /^Foo Bar Doo$/, uri: 'foobar1'},
+                {line: 42, pattern: /^Foo Bar Doo$/, uri: 'foobar2'}]
+
+            reporter.handleStepResult(event, NOOP)
+            send.calledWithMatch({
+                event: 'test:fail',
+                type: 'test',
+                title: 'step',
+                cid: '0-1',
+                parent: 'scenario124',
+                uid: 'step126',
+                file: 'foobar2',
+                tags: [{
+                    name: 'abc'
+                }]
+            }).should.be.true()
+
+            send.args[send.args.length - 1][0].err.message.should.be.equal(
+                'Step "step" is ambiguous. The following steps matched the step definition')
+            send.args[send.args.length - 1][0].err.stack.should.be.equal(
+                '/^Foo Bar Doo$/ in foobar1:5\n/^Foo Bar Doo$/ in foobar2:42')
+        })
+
         it('should send proper data on handleAfterScenarioEvent', () => {
             reporter.handleAfterScenario(getEvent('scenario', null, 127, ['abc']), NOOP)
             send.calledWithMatch({
@@ -158,7 +184,7 @@ describe('cucumber reporter', () => {
 
     describe('provides a fail counter', () => {
         it('should have right fail count at the end', () => {
-            reporter.failedCount.should.be.exactly(2)
+            reporter.failedCount.should.be.exactly(3)
         })
     })
 
