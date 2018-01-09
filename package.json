@@ -40,7 +40,7 @@
   "homepage": "https://github.com/webdriverio/wdio-cucumber-framework#readme",
   "dependencies": {
     "babel-runtime": "~6.25.0",
-    "cucumber": "~2.3.1",
+    "cucumber": "~3.2.1",
     "mockery": "~2.1.0",
     "wdio-sync": "0.7.0"
   },
