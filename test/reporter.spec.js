@@ -72,7 +72,9 @@ describe('cucumber reporter', () => {
                 duration: 0,
                 tags: [{
                     name: 'abc'
-                }]
+                }],
+                featureName: 'feature',
+                scenarioName: 'scenario'
             }).should.be.true()
         })
 
