@@ -92,7 +92,7 @@ Type: `String[]`<br>
 Default: `[]`
 
 ### require
-Require files containing your step definitions before executing features. If you apply a path don't use globbing as it is not supported. Instead just reference the step definition files directly.
+Require files containing your step definitions before executing features. You can also specify a glob to your step definitions.
 
 Type: `String[]`<br>
 Default: `[]`<br>
