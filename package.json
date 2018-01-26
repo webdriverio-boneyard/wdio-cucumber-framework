@@ -4,7 +4,7 @@
   "description": "A WebdriverIO plugin. Adapter for Cucumber2 testing framework.",
   "main": "build/adapter.js",
   "scripts": {
-    "postinstall": "npm run build",
+    "postinstall": "npm run compile",
     "build": "run-s compile",
     "clean": "rm -rf ./build ./coverage",
     "compile": "babel lib/ -d build/",
