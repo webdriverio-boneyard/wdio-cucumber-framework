@@ -43,9 +43,7 @@
     "babel-runtime": "~6.25.0",
     "cucumber": "~2.3.1",
     "mockery": "~2.1.0",
-    "wdio-sync": "0.7.0"
-  },
-  "devDependencies": {
+    "wdio-sync": "0.7.0",
     "babel-cli": "^6.23.0",
     "babel-core": "^6.23.1",
     "babel-eslint": "^7.1.1",
@@ -53,7 +51,9 @@
     "babel-plugin-rewire": "^1.0.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.22.0",
-    "babel-preset-stage-0": "^6.22.0",
+    "babel-preset-stage-0": "^6.22.0"
+  },
+  "devDependencies": {
     "codeclimate-test-reporter": "^0.5.0",
     "eslint": "^4.4.1",
     "eslint-config-standard": "^10.2.1",
