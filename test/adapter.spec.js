@@ -56,4 +56,18 @@ describe('adapter', function () {
             })
         })
     })
+    describe('should use the required files as defined in the options', function () {
+        it('should allow globs in required files', function () {
+            conf.cucumberOpts.compiler.push('js:babel-register')
+            conf.cucumberOpts.require = [path.join(__dirname, 'fixtures/es*-definition.js')]
+
+            global.browser = new WebdriverIO()
+            global.browser.options = {}
+            var adapter = new CucumberAdapter(0, conf, feature, {})
+            global.browser.getPrototype = function () { return WebdriverIO.prototype }
+            return adapter.run().then((res) => {
+                res.should.equal(0, 'test ok!')
+            })
+        })
+    })
 })
