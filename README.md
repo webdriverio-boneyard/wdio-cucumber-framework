@@ -60,7 +60,7 @@ Default: `*[]*`<br>
 Example: `['js:babel-core/register']`
 
 ### failAmbiguousDefinitions
-**Please note that this is a wdio-cucumber-framework specifc option and not recognized by cucumber-js itself**
+**Please note that this is a wdio-cucumber-framework specific option and not recognized by cucumber-js itself**
 Treat ambiguous definitions as errors.
 
 Type: `Boolean`<br>
@@ -73,7 +73,7 @@ Type: `Boolean`<br>
 Default: `false`
 
 ### ignoreUndefinedDefinitions
-**Please note that this is a wdio-cucumber-framework specifc option and not recognized by cucumber-js itself**
+**Please note that this is a wdio-cucumber-framework specific option and not recognized by cucumber-js itself**
 Treat undefined definitions as warnings.
 
 Type: `Boolean`<br>
