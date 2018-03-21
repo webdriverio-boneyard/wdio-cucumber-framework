@@ -36,7 +36,7 @@ Following code shows the default wdio test runner configuration...
 // wdio.conf.js
 module.exports = {
   // ...
-  framework: 'cucumber'
+  framework: 'cucumber',
   cucumberOpts: {
     timeout: 10000
   }
