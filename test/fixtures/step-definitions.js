@@ -1,17 +1,14 @@
 var assert = require('assert')
+var { Given, Then } = require('cucumber')
 
-var {defineSupportCode} = require('cucumber')
+Given('I go on the website {string}', (url) => {
+    browser.url(url)
+})
 
-defineSupportCode(function ({Given, When, Then}) {
-    Given('I go on the website {stringInDoubleQuotes}', (url) => {
-        browser.url(url)
-    })
+Then('I click on link {string}', (selector) => {
+    browser.click(selector)
+})
 
-    Then('I click on link {stringInDoubleQuotes}', (selector) => {
-        browser.click(selector)
-    })
-
-    Then('should the title of the page be {stringInDoubleQuotes}', (expectedTitle) => {
-        assert.equal(browser.getTitle(), expectedTitle)
-    })
+Then('should the title of the page be {string}', (expectedTitle) => {
+    assert.equal(browser.getTitle(), expectedTitle)
 })
