@@ -1,176 +1,305 @@
 import sinon from 'sinon'
 import CucumberReporter from '../lib/reporter'
+import { EventEmitter } from 'events'
 
-/**
- * create mocks
- */
 let send
+let eventBroadcaster
 let reporter
 
-function getEvent (name, status = 'pass', line = Math.round(Math.random() * 100), tags = [], err = new Error('foobar-error'), isStepInsideStep) {
-    return {
-        line,
-        name,
-        status,
-        uri: 'foobar2',
-        step: isStepInsideStep ? null : getEvent('step', status, line++, [], new Error('foobar-error'), true),
-        tags: tags.map(tag => ({ name: tag })),
-        failureException: err
+const gherkinDocEvent = {
+    uri: './any.feature',
+    document: {
+        type: 'GherkinDocument',
+        feature: {
+            type: 'Feature',
+            tags: [
+                { name: '@feature-tag1' },
+                { name: '@feature-tag2' }
+            ],
+            location: { line: 123, column: 1 },
+            keyword: 'Feature',
+            name: 'feature',
+            children: [{
+                type: 'Scenario',
+                tags: [
+                    { name: '@scenario-tag1' },
+                    { name: '@scenario-tag2' }
+                ],
+                location: { line: 124, column: 0 },
+                keyword: 'Scenario',
+                name: 'scenario',
+                steps: [
+                    {
+                        location: { line: 125, column: 1 },
+                        keyword: 'Given ',
+                        text: 'step-title-passing'
+                    },
+                    {
+                        location: { line: 126, column: 1 },
+                        keyword: 'When ',
+                        text: 'step-title-failing'
+                    }
+                ]
+            }]
+        }
     }
 }
 
-const NOOP = () => {}
-
 describe('cucumber reporter', () => {
     before(() => {
-        reporter = new CucumberReporter({}, {failAmbiguousDefinitions: true}, '0-1', ['/foobar.js'])
+        eventBroadcaster = new EventEmitter()
+        reporter = new CucumberReporter(eventBroadcaster, { failAmbiguousDefinitions: true }, '0-1', ['/foobar.js'])
         send = reporter.send = sinon.stub()
         send.returns(true)
     })
 
     describe('emits messages for certain cucumber events', () => {
-        it('should send proper data on handleBeforeFeatureEvent', () => {
-            reporter.handleBeforeFeature(getEvent('feature', 'pass', 123, ['abc']), NOOP)
+        it('should send proper data on `gherkin-document` event', () => {
+            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
 
-            send.calledWithMatch({
+            sinon.assert.calledWithMatch(send, {
                 event: 'suite:start',
                 type: 'suite',
                 uid: 'feature123',
-                file: 'foobar2',
+                file: './any.feature',
                 cid: '0-1',
-                tags: [{
-                    name: 'abc'
-                }]
-            }).should.be.true()
+                tags: [
+                    { name: '@feature-tag1' },
+                    { name: '@feature-tag2' }
+                ]
+            })
         })
 
-        it('should send proper data on handleBeforeScenarioEvent', () => {
-            reporter.handleBeforeScenario(getEvent('scenario', 'pass', 124, ['abc']), NOOP)
-            send.calledWithMatch({
+        it('should send proper data on `pickle-accepted` event', () => {
+            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            send.reset()
+
+            eventBroadcaster.emit('pickle-accepted', {
+                uri: gherkinDocEvent.uri,
+                pickle: {
+                    tags: [{ name: 'abc' }],
+                    name: 'scenario',
+                    locations: [{ line: 124, column: 1 }],
+                    steps: [{
+                        locations: [{ line: 125, column: 1 }],
+                        keyword: 'Given ',
+                        text: 'I go on the website "http://webdriver.io" the async way'
+                    }]
+                }
+            })
+
+            sinon.assert.calledWithMatch(send, {
                 event: 'suite:start',
                 type: 'suite',
                 cid: '0-1',
                 parent: 'feature123',
                 uid: 'scenario124',
-                file: 'foobar2',
-                tags: [{
-                    name: 'abc'
-                }]
-            }).should.be.true()
+                file: './any.feature',
+                tags: [{ name: 'abc' }]
+            })
         })
 
-        it('should send proper data on handleBeforeStepEvent', () => {
-            reporter.handleBeforeStep(getEvent('step', 'fail', 125, ['abc']), NOOP)
-            send.calledWithMatch({
+        it('should send proper data on `test-step-started` event', () => {
+            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            send.reset()
+
+            eventBroadcaster.emit('test-step-started', {
+                index: 0,
+                testCase: {
+                    sourceLocation: { uri: gherkinDocEvent.uri, line: 124 }
+                }
+            })
+
+            sinon.assert.calledWithMatch(send, {
                 event: 'test:start',
                 type: 'test',
-                title: 'step',
+                title: 'step-title-passing',
                 cid: '0-1',
                 parent: 'scenario124',
-                uid: 'step125',
-                file: 'foobar2',
+                uid: 'step-title-passing125',
+                file: './any.feature',
                 duration: 0,
-                tags: [{
-                    name: 'abc'
-                }],
+                tags: [
+                    { name: '@scenario-tag1' },
+                    { name: '@scenario-tag2' }
+                ],
                 featureName: 'feature',
                 scenarioName: 'scenario'
-            }).should.be.true()
+            })
         })
 
-        it('should send proper data on handleStepResultEvent for error of error type', () => {
-            reporter.handleStepResult(getEvent('step', 'failed', 126, ['abc']), NOOP)
-            send.calledWithMatch({
-                event: 'test:fail',
+        it('should send proper data on successful `test-step-finished` event', () => {
+            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            send.reset()
+
+            eventBroadcaster.emit('test-step-finished', {
+                index: 0,
+                result: { duration: 10, status: 'passed' },
+                testCase: {
+                    sourceLocation: { uri: gherkinDocEvent.uri, line: 124 }
+                }
+            })
+
+            sinon.assert.calledWithMatch(send, {
+                event: 'test:pass',
                 type: 'test',
-                title: 'step',
+                title: 'step-title-passing',
                 cid: '0-1',
                 parent: 'scenario124',
-                uid: 'step126',
-                file: 'foobar2',
-                tags: [{
-                    name: 'abc'
-                }]
-            }).should.be.true()
-            send.args[send.args.length - 1][0].err.message.should.be.equal('foobar-error')
+                uid: 'step-title-passing125',
+                file: './any.feature',
+                tags: [
+                    { name: '@scenario-tag1' },
+                    { name: '@scenario-tag2' }
+                ]
+            })
         })
 
-        it('should send proper data on handleStepResultEvent for error of string type', () => {
-            reporter.handleStepResult(getEvent('step', 'failed', 126, ['abc'], 'foo-error'), NOOP)
-            send.calledWithMatch({
+        it('should send proper data on failing `test-step-finished` event with exception', () => {
+            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            send.reset()
+
+            eventBroadcaster.emit('test-step-finished', {
+                index: 1,
+                result: {
+                    duration: 10,
+                    status: 'failed',
+                    exception: new Error('exception-error')
+                },
+                testCase: {
+                    sourceLocation: { uri: gherkinDocEvent.uri, line: 124 }
+                }
+            })
+
+            sinon.assert.calledWithMatch(send, {
                 event: 'test:fail',
                 type: 'test',
-                title: 'step',
+                title: 'step-title-failing',
                 cid: '0-1',
                 parent: 'scenario124',
-                uid: 'step126',
-                file: 'foobar2',
-                tags: [{
-                    name: 'abc'
-                }]
-            }).should.be.true()
-            send.args[send.args.length - 1][0].err.message.should.be.equal('foo-error')
+                uid: 'step-title-failing126',
+                file: './any.feature',
+                tags: [
+                    { name: '@scenario-tag1' },
+                    { name: '@scenario-tag2' }
+                ]
+            })
+            send.args[send.args.length - 1][0].err.message.should.be.equal('exception-error')
         })
 
-        it('should send proper data on handleStepResultEvent for ambiguous step error', () => {
-            const event = getEvent('step', 'ambiguous', 131, [])
-            event.ambiguousStepDefinitions = [
-                {line: 5, pattern: /^Foo Bar Doo$/, uri: 'foobar1'},
-                {line: 42, pattern: /^Foo Bar Doo$/, uri: 'foobar2'}]
+        it('should send proper data on failing `test-step-finished` event with string error', () => {
+            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            send.reset()
 
-            reporter.handleStepResult(event, NOOP)
-            send.calledWithMatch({
+            eventBroadcaster.emit('test-step-finished', {
+                index: 1,
+                result: {
+                    duration: 10,
+                    status: 'failed',
+                    exception: 'string-error'
+                },
+                testCase: {
+                    sourceLocation: { uri: gherkinDocEvent.uri, line: 124 }
+                }
+            })
+
+            sinon.assert.calledWithMatch(send, {
                 event: 'test:fail',
                 type: 'test',
-                title: 'step',
+                title: 'step-title-failing',
                 cid: '0-1',
                 parent: 'scenario124',
-                uid: 'step126',
-                file: 'foobar2',
-                tags: [{
-                    name: 'abc'
-                }]
-            }).should.be.true()
-
-            send.args[send.args.length - 1][0].err.message.should.be.equal(
-                'Step "step" is ambiguous. The following steps matched the step definition')
-            send.args[send.args.length - 1][0].err.stack.should.be.equal(
-                '/^Foo Bar Doo$/ in foobar1:5\n/^Foo Bar Doo$/ in foobar2:42')
+                uid: 'step-title-failing126',
+                file: './any.feature',
+                tags: [
+                    { name: '@scenario-tag1' },
+                    { name: '@scenario-tag2' }
+                ]
+            })
+            send.args[send.args.length - 1][0].err.message.should.be.equal('string-error')
         })
 
-        it('should send proper data on handleAfterScenarioEvent', () => {
-            reporter.handleAfterScenario(getEvent('scenario', null, 127, ['abc']), NOOP)
-            send.calledWithMatch({
+        it('should send proper data on ambiguous `test-step-finished` event', () => {
+            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            send.reset()
+
+            eventBroadcaster.emit('test-step-finished', {
+                index: 1,
+                result: {
+                    duration: 10,
+                    status: 'ambiguous',
+                    exception: 'cucumber-ambiguous-error-message'
+                },
+                testCase: {
+                    sourceLocation: { uri: gherkinDocEvent.uri, line: 124 }
+                }
+            })
+
+            sinon.assert.calledWithMatch(send, {
+                event: 'test:fail',
+                type: 'test',
+                title: 'step-title-failing',
+                cid: '0-1',
+                parent: 'scenario124',
+                uid: 'step-title-failing126',
+                file: './any.feature',
+                tags: [
+                    { name: '@scenario-tag1' },
+                    { name: '@scenario-tag2' }
+                ]
+            })
+            send.args[send.args.length - 1][0].err.message.should.be.equal('cucumber-ambiguous-error-message')
+        })
+
+        it('should send proper data on `test-case-finished` event', () => {
+            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            send.reset()
+
+            eventBroadcaster.emit('test-case-finished', {
+                result: { duration: 0, status: 'passed' },
+                sourceLocation: { uri: gherkinDocEvent.uri, line: 124 }
+            })
+
+            sinon.assert.calledWithMatch(send, {
                 event: 'suite:end',
                 type: 'suite',
                 cid: '0-1',
                 parent: 'feature123',
-                uid: 'scenario127',
-                file: 'foobar2',
-                tags: [{
-                    name: 'abc'
-                }]
-            }).should.be.true()
+                uid: 'scenario124',
+                file: './any.feature',
+                tags: [
+                    { name: '@scenario-tag1' },
+                    { name: '@scenario-tag2' }
+                ]
+            })
         })
 
-        it('should send proper data on handleAfterFeatureEvent', () => {
-            reporter.handleAfterFeature(getEvent('feature', null, 128, ['abc']), NOOP)
-            send.calledWithMatch({
+        it('should send proper data on `test-run-finished` event', () => {
+            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            send.reset()
+
+            eventBroadcaster.emit('test-run-finished', {
+                result: { duration: 0, success: true }
+            })
+
+            sinon.assert.calledWithMatch(send, {
                 event: 'suite:end',
                 type: 'suite',
                 title: 'feature',
-                file: 'foobar2',
-                uid: 'feature128',
+                file: './any.feature',
+                uid: 'feature123',
                 cid: '0-1',
                 parent: null,
-                tags: [{
-                    name: 'abc'
-                }]
-            }).should.be.true()
+                tags: [
+                    { name: '@feature-tag1' },
+                    { name: '@feature-tag2' }
+                ]
+            })
         })
     })
 
     describe('make sure all commands are sent properly', () => {
+        // TODO this spec is not isolated and requires other specs above to run in advance
         it('should wait until all events were sent', () => {
             const start = (new Date()).getTime()
             setTimeout(() => {
@@ -192,7 +321,7 @@ describe('cucumber reporter', () => {
 
     describe('tags in title', () => {
         before(() => {
-            reporter = new CucumberReporter({}, {
+            reporter = new CucumberReporter(eventBroadcaster, {
                 tagsInTitle: true
             }, '0-1', ['/foobar.js'])
             send = reporter.send = sinon.stub()
@@ -200,29 +329,47 @@ describe('cucumber reporter', () => {
         })
 
         it('should add tags on handleBeforeFeatureEvent', () => {
-            reporter.handleBeforeFeature(getEvent('feature', 'pass', 129, ['@tag_1', '@tag_2']), NOOP)
+            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
 
-            send.calledWithMatch({
+            sinon.assert.calledWithMatch(send, {
                 event: 'suite:start',
                 type: 'suite',
-                title: '@tag_1, @tag_2: feature',
-                uid: 'feature129',
-                file: 'foobar2',
+                title: '@feature-tag1, @feature-tag2: feature',
+                uid: 'feature123',
+                file: './any.feature',
                 cid: '0-1'
-            }).should.be.true()
+            })
         })
 
         it('should add tags on handleBeforeScenarioEvent', () => {
-            reporter.handleBeforeScenario(getEvent('scenario', 'pass', 130, ['@tag_1']), NOOP)
+            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            send.reset()
 
-            send.calledWithMatch({
+            eventBroadcaster.emit('pickle-accepted', {
+                uri: gherkinDocEvent.uri,
+                pickle: {
+                    tags: [
+                        { name: '@scenario-tag1' },
+                        { name: '@scenario-tag2' }
+                    ],
+                    name: 'scenario',
+                    locations: [{ line: 124, column: 1 }],
+                    steps: [{
+                        locations: [{ line: 125, column: 1 }],
+                        keyword: 'Given ',
+                        text: 'I go on the website "http://webdriver.io" the async way'
+                    }]
+                }
+            })
+
+            sinon.assert.calledWithMatch(send, {
                 event: 'suite:start',
                 type: 'suite',
-                title: '@tag_1: scenario',
-                uid: 'scenario130',
-                file: 'foobar2',
+                title: '@scenario-tag1, @scenario-tag2: scenario',
+                uid: 'scenario124',
+                file: './any.feature',
                 cid: '0-1'
-            }).should.be.true()
+            })
         })
     })
 })
