@@ -5,7 +5,7 @@ WDIO Cucumber Framework Adapter
 
 ***
 
-> A WebdriverIO plugin. Adapter for CucumberJS v2 testing framework. To use v1 install this package with latest version v0.3.1.
+> A WebdriverIO plugin. Adapter for CucumberJS v4 testing framework. To use v2 install this package with v1.1.1 and to use v1 with v0.3.1.
 
 ## Installation
 
@@ -14,7 +14,7 @@ The easiest way is to keep `wdio-cucumber-framework` as a devDependency in your 
 ```json
 {
   "devDependencies": {
-    "wdio-cucumber-framework": "~1.0.0"
+    "wdio-cucumber-framework": "~2.0.0"
   }
 }
 ```
@@ -45,7 +45,7 @@ module.exports = {
 ```
 
 ## `cucumberOpts` Options
-    
+
 ### backtrace
 Show full backtrace for errors.
 
@@ -130,7 +130,7 @@ Please see the [Cucumber documentation](https://docs.cucumber.io/tag-expressions
 Type: `String`<br>
 Default: ``
 
-### tagsInTitle 
+### tagsInTitle
 Add cucumber tags to feature or scenario name
 
 Type: `Boolean[]`<br>
