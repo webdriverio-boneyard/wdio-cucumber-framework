@@ -1,17 +1,17 @@
-var path = require('path')
-var { CucumberAdapter } = require('../build/adapter')
+const path = require('path')
+const { CucumberAdapter } = require('../build/adapter')
 
-var conf = {
+const conf = {
     cucumberOpts: {
         compiler: [],
         require: [path.join(__dirname, '/fixtures/es6-definition.js')]
     }
 }
-var feature = ['./test/fixtures/es6.feature']
+const feature = ['./test/fixtures/es6.feature']
 
-var NOOP = function () {}
+const NOOP = function () {}
 
-var WebdriverIO = function () {}
+const WebdriverIO = function () {}
 WebdriverIO.prototype = {
     /**
      * task of this command is to add 1 so we can have a simple demo test like
@@ -34,7 +34,7 @@ describe('adapter', function () {
         it('should not run when no compiler is defined', function () {
             global.browser = new WebdriverIO()
             global.browser.options = {}
-            var adapter = new CucumberAdapter(0, conf, feature, {})
+            const adapter = new CucumberAdapter(0, conf, feature, {})
             global.browser.getPrototype = function () { return WebdriverIO.prototype }
 
             return adapter.run().then(() => {
@@ -49,7 +49,7 @@ describe('adapter', function () {
 
             global.browser = new WebdriverIO()
             global.browser.options = {}
-            var adapter = new CucumberAdapter(0, conf, feature, {})
+            const adapter = new CucumberAdapter(0, conf, feature, {})
             global.browser.getPrototype = function () { return WebdriverIO.prototype }
             return adapter.run().then((res) => {
                 res.should.equal(0, 'test ok!')
@@ -63,7 +63,7 @@ describe('adapter', function () {
 
             global.browser = new WebdriverIO()
             global.browser.options = {}
-            var adapter = new CucumberAdapter(0, conf, feature, {})
+            const adapter = new CucumberAdapter(0, conf, feature, {});
             global.browser.getPrototype = function () { return WebdriverIO.prototype }
             return adapter.run().then((res) => {
                 res.should.equal(0, 'test ok!')
