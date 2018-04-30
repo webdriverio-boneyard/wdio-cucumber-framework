@@ -125,7 +125,7 @@ Default: `false`
 ### tagExpression
 Only execute the features or scenarios with tags matching the expression. Note that untagged
 features will still spawn a Selenium session (see issue [webdriverio/webdriverio#1247](https://github.com/webdriverio/webdriverio/issues/1247)).
-Please see the [Cucumber documentation](https://docs.cucumber.io/tag-expressions/) for more details.
+Please see the [Cucumber documentation](https://docs.cucumber.io/cucumber/api/#tag-expressions) for more details.
 
 Type: `String`<br>
 Default: ``
