@@ -20,22 +20,34 @@ const gherkinDocEvent = {
             keyword: 'Feature',
             name: 'feature',
             children: [{
+                type: 'Background',
+                location: { line: 124, column: 0 },
+                keyword: 'Background',
+                name: 'background',
+                steps: [
+                    {
+                        location: { line: 125, column: 1 },
+                        keyword: 'Given ',
+                        text: 'background-title'
+                    }
+                ]
+            }, {
                 type: 'Scenario',
                 tags: [
                     { name: '@scenario-tag1' },
                     { name: '@scenario-tag2' }
                 ],
-                location: { line: 124, column: 0 },
+                location: { line: 126, column: 0 },
                 keyword: 'Scenario',
                 name: 'scenario',
                 steps: [
                     {
-                        location: { line: 125, column: 1 },
+                        location: { line: 127, column: 1 },
                         keyword: 'Given ',
                         text: 'step-title-passing'
                     },
                     {
-                        location: { line: 126, column: 1 },
+                        location: { line: 128, column: 1 },
                         keyword: 'When ',
                         text: 'step-title-failing'
                     }
@@ -79,9 +91,9 @@ describe('cucumber reporter', () => {
                 pickle: {
                     tags: [{ name: 'abc' }],
                     name: 'scenario',
-                    locations: [{ line: 124, column: 1 }],
+                    locations: [{ line: 126, column: 1 }],
                     steps: [{
-                        locations: [{ line: 125, column: 1 }],
+                        locations: [{ line: 127, column: 1 }],
                         keyword: 'Given ',
                         text: 'I go on the website "http://webdriver.io" the async way'
                     }]
@@ -93,7 +105,7 @@ describe('cucumber reporter', () => {
                 type: 'suite',
                 cid: '0-1',
                 parent: 'feature123',
-                uid: 'scenario124',
+                uid: 'scenario126',
                 file: './any.feature',
                 tags: [{ name: 'abc' }]
             })
@@ -101,12 +113,29 @@ describe('cucumber reporter', () => {
 
         it('should send proper data on `test-step-started` event', () => {
             eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            eventBroadcaster.emit('test-case-prepared', {
+                sourceLocation: { uri: gherkinDocEvent.uri, line: 126 },
+                steps: [
+                    {
+                        sourceLocation: { uri: gherkinDocEvent.uri, line: 125 },
+                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
+                    },
+                    {
+                        sourceLocation: { uri: gherkinDocEvent.uri, line: 127 },
+                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
+                    },
+                    {
+                        sourceLocation: { uri: gherkinDocEvent.uri, line: 128 },
+                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
+                    }
+                ]
+            })
             send.reset()
 
             eventBroadcaster.emit('test-step-started', {
-                index: 0,
+                index: 1,
                 testCase: {
-                    sourceLocation: { uri: gherkinDocEvent.uri, line: 124 }
+                    sourceLocation: { uri: gherkinDocEvent.uri, line: 126 }
                 }
             })
 
@@ -115,8 +144,8 @@ describe('cucumber reporter', () => {
                 type: 'test',
                 title: 'step-title-passing',
                 cid: '0-1',
-                parent: 'scenario124',
-                uid: 'step-title-passing125',
+                parent: 'scenario126',
+                uid: 'step-title-passing127',
                 file: './any.feature',
                 duration: 0,
                 tags: [
@@ -130,13 +159,30 @@ describe('cucumber reporter', () => {
 
         it('should send proper data on successful `test-step-finished` event', () => {
             eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            eventBroadcaster.emit('test-case-prepared', {
+                sourceLocation: { uri: gherkinDocEvent.uri, line: 126 },
+                steps: [
+                    {
+                        sourceLocation: { uri: gherkinDocEvent.uri, line: 125 },
+                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
+                    },
+                    {
+                        sourceLocation: { uri: gherkinDocEvent.uri, line: 127 },
+                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
+                    },
+                    {
+                        sourceLocation: { uri: gherkinDocEvent.uri, line: 128 },
+                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
+                    }
+                ]
+            })
             send.reset()
 
             eventBroadcaster.emit('test-step-finished', {
-                index: 0,
+                index: 1,
                 result: { duration: 10, status: 'passed' },
                 testCase: {
-                    sourceLocation: { uri: gherkinDocEvent.uri, line: 124 }
+                    sourceLocation: { uri: gherkinDocEvent.uri, line: 126 }
                 }
             })
 
@@ -145,8 +191,8 @@ describe('cucumber reporter', () => {
                 type: 'test',
                 title: 'step-title-passing',
                 cid: '0-1',
-                parent: 'scenario124',
-                uid: 'step-title-passing125',
+                parent: 'scenario126',
+                uid: 'step-title-passing127',
                 file: './any.feature',
                 tags: [
                     { name: '@scenario-tag1' },
@@ -157,17 +203,34 @@ describe('cucumber reporter', () => {
 
         it('should send proper data on failing `test-step-finished` event with exception', () => {
             eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            eventBroadcaster.emit('test-case-prepared', {
+                sourceLocation: { uri: gherkinDocEvent.uri, line: 126 },
+                steps: [
+                    {
+                        sourceLocation: { uri: gherkinDocEvent.uri, line: 125 },
+                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
+                    },
+                    {
+                        sourceLocation: { uri: gherkinDocEvent.uri, line: 127 },
+                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
+                    },
+                    {
+                        sourceLocation: { uri: gherkinDocEvent.uri, line: 128 },
+                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
+                    }
+                ]
+            })
             send.reset()
 
             eventBroadcaster.emit('test-step-finished', {
-                index: 1,
+                index: 2,
                 result: {
                     duration: 10,
                     status: 'failed',
                     exception: new Error('exception-error')
                 },
                 testCase: {
-                    sourceLocation: { uri: gherkinDocEvent.uri, line: 124 }
+                    sourceLocation: { uri: gherkinDocEvent.uri, line: 126 }
                 }
             })
 
@@ -176,8 +239,8 @@ describe('cucumber reporter', () => {
                 type: 'test',
                 title: 'step-title-failing',
                 cid: '0-1',
-                parent: 'scenario124',
-                uid: 'step-title-failing126',
+                parent: 'scenario126',
+                uid: 'step-title-failing128',
                 file: './any.feature',
                 tags: [
                     { name: '@scenario-tag1' },
@@ -189,17 +252,34 @@ describe('cucumber reporter', () => {
 
         it('should send proper data on failing `test-step-finished` event with string error', () => {
             eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            eventBroadcaster.emit('test-case-prepared', {
+                sourceLocation: { uri: gherkinDocEvent.uri, line: 126 },
+                steps: [
+                    {
+                        sourceLocation: { uri: gherkinDocEvent.uri, line: 125 },
+                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
+                    },
+                    {
+                        sourceLocation: { uri: gherkinDocEvent.uri, line: 127 },
+                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
+                    },
+                    {
+                        sourceLocation: { uri: gherkinDocEvent.uri, line: 128 },
+                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
+                    }
+                ]
+            })
             send.reset()
 
             eventBroadcaster.emit('test-step-finished', {
-                index: 1,
+                index: 2,
                 result: {
                     duration: 10,
                     status: 'failed',
                     exception: 'string-error'
                 },
                 testCase: {
-                    sourceLocation: { uri: gherkinDocEvent.uri, line: 124 }
+                    sourceLocation: { uri: gherkinDocEvent.uri, line: 126 }
                 }
             })
 
@@ -208,8 +288,8 @@ describe('cucumber reporter', () => {
                 type: 'test',
                 title: 'step-title-failing',
                 cid: '0-1',
-                parent: 'scenario124',
-                uid: 'step-title-failing126',
+                parent: 'scenario126',
+                uid: 'step-title-failing128',
                 file: './any.feature',
                 tags: [
                     { name: '@scenario-tag1' },
@@ -221,17 +301,34 @@ describe('cucumber reporter', () => {
 
         it('should send proper data on ambiguous `test-step-finished` event', () => {
             eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            eventBroadcaster.emit('test-case-prepared', {
+                sourceLocation: { uri: gherkinDocEvent.uri, line: 126 },
+                steps: [
+                    {
+                        sourceLocation: { uri: gherkinDocEvent.uri, line: 125 },
+                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
+                    },
+                    {
+                        sourceLocation: { uri: gherkinDocEvent.uri, line: 127 },
+                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
+                    },
+                    {
+                        sourceLocation: { uri: gherkinDocEvent.uri, line: 128 },
+                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
+                    }
+                ]
+            })
             send.reset()
 
             eventBroadcaster.emit('test-step-finished', {
-                index: 1,
+                index: 2,
                 result: {
                     duration: 10,
                     status: 'ambiguous',
                     exception: 'cucumber-ambiguous-error-message'
                 },
                 testCase: {
-                    sourceLocation: { uri: gherkinDocEvent.uri, line: 124 }
+                    sourceLocation: { uri: gherkinDocEvent.uri, line: 126 }
                 }
             })
 
@@ -240,8 +337,8 @@ describe('cucumber reporter', () => {
                 type: 'test',
                 title: 'step-title-failing',
                 cid: '0-1',
-                parent: 'scenario124',
-                uid: 'step-title-failing126',
+                parent: 'scenario126',
+                uid: 'step-title-failing128',
                 file: './any.feature',
                 tags: [
                     { name: '@scenario-tag1' },
@@ -257,7 +354,7 @@ describe('cucumber reporter', () => {
 
             eventBroadcaster.emit('test-case-finished', {
                 result: { duration: 0, status: 'passed' },
-                sourceLocation: { uri: gherkinDocEvent.uri, line: 124 }
+                sourceLocation: { uri: gherkinDocEvent.uri, line: 126 }
             })
 
             sinon.assert.calledWithMatch(send, {
@@ -265,7 +362,7 @@ describe('cucumber reporter', () => {
                 type: 'suite',
                 cid: '0-1',
                 parent: 'feature123',
-                uid: 'scenario124',
+                uid: 'scenario126',
                 file: './any.feature',
                 tags: [
                     { name: '@scenario-tag1' },
@@ -353,9 +450,9 @@ describe('cucumber reporter', () => {
                         { name: '@scenario-tag2' }
                     ],
                     name: 'scenario',
-                    locations: [{ line: 124, column: 1 }],
+                    locations: [{ line: 126, column: 1 }],
                     steps: [{
-                        locations: [{ line: 125, column: 1 }],
+                        locations: [{ line: 127, column: 1 }],
                         keyword: 'Given ',
                         text: 'I go on the website "http://webdriver.io" the async way'
                     }]
@@ -366,7 +463,7 @@ describe('cucumber reporter', () => {
                 event: 'suite:start',
                 type: 'suite',
                 title: '@scenario-tag1, @scenario-tag2: scenario',
-                uid: 'scenario124',
+                uid: 'scenario126',
                 file: './any.feature',
                 cid: '0-1'
             })

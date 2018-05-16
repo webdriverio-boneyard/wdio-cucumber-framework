@@ -106,7 +106,7 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
 
         it('should contain right scenario data', () => {
             let scenario = beforeScenarioHook.args[0]
-            scenario.name.should.be.equal('Foo Bar')
+            scenario.name.should.be.equal('Foo Baz')
         })
     })
 
@@ -215,7 +215,7 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
 
         it('should contain right scenario data', () => {
             let scenario = afterScenarioHook.args[0]
-            scenario.name.should.be.equal('Foo Bar')
+            scenario.name.should.be.equal('Foo Baz')
         })
     })
 
