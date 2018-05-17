@@ -21,4 +21,3 @@ Feature: Example feature
   Scenario: Foo Baz
     When  I click on link "=Also Google"
     Then  should the title of the page be "Google"
-
