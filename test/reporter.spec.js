@@ -19,6 +19,7 @@ const gherkinDocEvent = {
             location: { line: 123, column: 1 },
             keyword: 'Feature',
             name: 'feature',
+            description: '    This is a feature description\n    Second description',
             children: [{
                 type: 'Background',
                 location: { line: 124, column: 0 },
@@ -40,13 +41,54 @@ const gherkinDocEvent = {
                 location: { line: 126, column: 0 },
                 keyword: 'Scenario',
                 name: 'scenario',
+                description: '    This should be a scenario description',
                 steps: [
                     {
-                        location: { line: 127, column: 1 },
+                        type: 'Step',
+                        location: {line: 127, column: 1},
                         keyword: 'Given ',
-                        text: 'step-title-passing'
+                        text: 'step-title-passing',
+                        argument: {
+                            type: 'DataTable',
+                            location: { line: 15, column: 13 },
+                            rows: [
+                                {
+                                    type: 'TableRow',
+                                    location: { line: 15, column: 13 },
+                                    cells: [
+                                        {
+                                            type: 'TableCell',
+                                            location: { line: 15, column: 15 },
+                                            value: 'Cucumber'
+                                        },
+                                        {
+                                            type: 'TableCell',
+                                            location: { line: 15, column: 30 },
+                                            value: 'Cucumis sativus'
+                                        }
+                                    ]
+                                },
+                                {
+                                    type: 'TableRow',
+                                    location: { line: 16, column: 13 },
+                                    cells: [
+                                        {
+                                            type: 'TableCell',
+                                            location: { line: 16, column: 15 },
+                                            value: 'Burr Gherkin'
+                                        },
+                                        {
+                                            type: 'TableCell',
+                                            location: { line: 16, column: 30 },
+                                            value: 'Cucumis anguria'
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
                     },
                     {
+                        type: 'Step',
                         location: { line: 128, column: 1 },
                         keyword: 'When ',
                         text: 'step-title-failing'
