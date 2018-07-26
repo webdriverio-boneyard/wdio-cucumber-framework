@@ -13,3 +13,12 @@ Feature: Example feature
   Scenario: Foo Baz
     When  I click on link "=Also Google"
     Then  should the title of the page be "Google"
+
+  Scenario Outline: Foo Bar Baz
+     When  I click on link "<link>"
+     Then  should the title of the page be "<pageTitle>"
+
+     Examples:
+         | link          | pageTitle |
+         | =Google       | Google    |
+         | =Also Google  | Google    |
