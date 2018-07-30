@@ -193,7 +193,7 @@ describe('CucumberAdapter executes hooks using native Promises', () => {
 
         it('should contain right step data', () => {
             let step = afterStepHook.args[0]
-            step.text.should.be.equal(`should the title of the page be "Google"`)
+            step.text.should.startWith(`should the title of the page be`)
         })
     })
 
