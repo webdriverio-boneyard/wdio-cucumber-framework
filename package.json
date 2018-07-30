@@ -14,7 +14,7 @@
     "release:major": "np major",
     "test": "run-s eslint test:unit build test:postadapter",
     "test:ci": "run-s clean eslint build test:cover test:postadapter",
-    "test:unit": "mocha --compilers js:babel-core/register \"./test/!(adapter.spec).js\"",
+    "test:unit": "mocha --bail --compilers js:babel-core/register \"./test/!(adapter.spec).js\"",
     "test:postadapter": "mocha test/adapter.spec.js",
     "test:cover": "babel-node ./node_modules/.bin/isparta cover --include 'lib/*.js' _mocha -- \"test/!(adapter.spec).js\"",
     "prepare": "npm prune",
