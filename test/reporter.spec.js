@@ -124,7 +124,7 @@ describe('cucumber reporter', () => {
             })
         })
 
-        it('should send proper data on `pickle-accepted` event', () => {
+        it('should not send any data on `pickle-accepted` event', () => {
             eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
             send.reset()
 
@@ -141,6 +141,28 @@ describe('cucumber reporter', () => {
                     }]
                 }
             })
+
+            sinon.assert.notCalled(send)
+        })
+
+        it('should send accepted pickle\'s data on `test-case-started` event', () => {
+            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            send.reset()
+
+            eventBroadcaster.emit('pickle-accepted', {
+                uri: gherkinDocEvent.uri,
+                pickle: {
+                    tags: [{ name: 'abc' }],
+                    name: 'scenario',
+                    locations: [{ line: 126, column: 1 }],
+                    steps: [{
+                        locations: [{ line: 127, column: 1 }],
+                        keyword: 'Given ',
+                        text: 'I go on the website "http://webdriver.io" the async way'
+                    }]
+                }
+            })
+            eventBroadcaster.emit('test-case-started', {})
 
             sinon.assert.calledWithMatch(send, {
                 event: 'suite:start',
@@ -500,6 +522,7 @@ describe('cucumber reporter', () => {
                     }]
                 }
             })
+            eventBroadcaster.emit('test-case-started', {})
 
             sinon.assert.calledWithMatch(send, {
                 event: 'suite:start',
