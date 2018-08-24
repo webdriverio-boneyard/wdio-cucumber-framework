@@ -2,10 +2,6 @@ import sinon from 'sinon'
 import CucumberReporter from '../lib/reporter'
 import { EventEmitter } from 'events'
 
-let send
-let eventBroadcaster
-let reporter
-
 const gherkinDocEvent = {
     uri: './any.feature',
     document: {
@@ -99,17 +95,54 @@ const gherkinDocEvent = {
     }
 }
 
-describe('cucumber reporter', () => {
-    before(() => {
-        eventBroadcaster = new EventEmitter()
-        reporter = new CucumberReporter(eventBroadcaster, { failAmbiguousDefinitions: true }, '0-1', ['/foobar.js'])
-        send = reporter.send = sinon.stub()
-        send.returns(true)
-    })
+const loadGherkin = (eventBroadcaster) => eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+const acceptPickle = (eventBroadcaster) => eventBroadcaster.emit('pickle-accepted', {
+    uri: gherkinDocEvent.uri,
+    pickle: {
+        tags: [{ name: 'abc' }],
+        name: 'scenario',
+        locations: [{ line: 126, column: 1 }],
+        steps: [{
+            locations: [{ line: 127, column: 1 }],
+            keyword: 'Given ',
+            text: 'step-title-passing'
+        }]
+    }
+})
+const prepareSuite = (eventBroadcaster) => eventBroadcaster.emit('test-case-prepared', {
+    sourceLocation: { uri: gherkinDocEvent.uri, line: 126 },
+    steps: [
+        {
+            sourceLocation: { uri: gherkinDocEvent.uri, line: 125 },
+            actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
+        },
+        {
+            sourceLocation: { uri: gherkinDocEvent.uri, line: 127 },
+            actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
+        },
+        {
+            sourceLocation: { uri: gherkinDocEvent.uri, line: 128 },
+            actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
+        }
+    ]
+})
+const startSuite = (eventBroadcaster) => eventBroadcaster.emit('test-case-started', {})
 
+describe('cucumber reporter', () => {
     describe('emits messages for certain cucumber events', () => {
+        let send
+        let eventBroadcaster
+        let reporter
+
+        beforeEach(() => {
+            eventBroadcaster = new EventEmitter()
+            reporter = new CucumberReporter(eventBroadcaster, { failAmbiguousDefinitions: true }, '0-1', ['/foobar.js'])
+            send = reporter.send = sinon.stub()
+            send.returns(true)
+        })
+
         it('should send proper data on `gherkin-document` event', () => {
-            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            loadGherkin(eventBroadcaster)
 
             sinon.assert.calledWithMatch(send, {
                 event: 'suite:start',
@@ -125,44 +158,19 @@ describe('cucumber reporter', () => {
         })
 
         it('should not send any data on `pickle-accepted` event', () => {
-            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            loadGherkin(eventBroadcaster)
             send.reset()
-
-            eventBroadcaster.emit('pickle-accepted', {
-                uri: gherkinDocEvent.uri,
-                pickle: {
-                    tags: [{ name: 'abc' }],
-                    name: 'scenario',
-                    locations: [{ line: 126, column: 1 }],
-                    steps: [{
-                        locations: [{ line: 127, column: 1 }],
-                        keyword: 'Given ',
-                        text: 'I go on the website "http://webdriver.io" the async way'
-                    }]
-                }
-            })
+            acceptPickle(eventBroadcaster)
 
             sinon.assert.notCalled(send)
         })
 
         it('should send accepted pickle\'s data on `test-case-started` event', () => {
-            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            loadGherkin(eventBroadcaster)
+            acceptPickle(eventBroadcaster)
+            prepareSuite(eventBroadcaster)
             send.reset()
-
-            eventBroadcaster.emit('pickle-accepted', {
-                uri: gherkinDocEvent.uri,
-                pickle: {
-                    tags: [{ name: 'abc' }],
-                    name: 'scenario',
-                    locations: [{ line: 126, column: 1 }],
-                    steps: [{
-                        locations: [{ line: 127, column: 1 }],
-                        keyword: 'Given ',
-                        text: 'I go on the website "http://webdriver.io" the async way'
-                    }]
-                }
-            })
-            eventBroadcaster.emit('test-case-started', {})
+            startSuite(eventBroadcaster)
 
             sinon.assert.calledWithMatch(send, {
                 event: 'suite:start',
@@ -176,24 +184,10 @@ describe('cucumber reporter', () => {
         })
 
         it('should send proper data on `test-step-started` event', () => {
-            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
-            eventBroadcaster.emit('test-case-prepared', {
-                sourceLocation: { uri: gherkinDocEvent.uri, line: 126 },
-                steps: [
-                    {
-                        sourceLocation: { uri: gherkinDocEvent.uri, line: 125 },
-                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
-                    },
-                    {
-                        sourceLocation: { uri: gherkinDocEvent.uri, line: 127 },
-                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
-                    },
-                    {
-                        sourceLocation: { uri: gherkinDocEvent.uri, line: 128 },
-                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
-                    }
-                ]
-            })
+            loadGherkin(eventBroadcaster)
+            acceptPickle(eventBroadcaster)
+            prepareSuite(eventBroadcaster)
+            startSuite(eventBroadcaster)
             send.reset()
 
             eventBroadcaster.emit('test-step-started', {
@@ -211,7 +205,6 @@ describe('cucumber reporter', () => {
                 parent: 'scenario126',
                 uid: 'step-title-passing127',
                 file: './any.feature',
-                duration: 0,
                 tags: [
                     { name: '@scenario-tag1' },
                     { name: '@scenario-tag2' }
@@ -222,24 +215,10 @@ describe('cucumber reporter', () => {
         })
 
         it('should send proper data on successful `test-step-finished` event', () => {
-            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
-            eventBroadcaster.emit('test-case-prepared', {
-                sourceLocation: { uri: gherkinDocEvent.uri, line: 126 },
-                steps: [
-                    {
-                        sourceLocation: { uri: gherkinDocEvent.uri, line: 125 },
-                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
-                    },
-                    {
-                        sourceLocation: { uri: gherkinDocEvent.uri, line: 127 },
-                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
-                    },
-                    {
-                        sourceLocation: { uri: gherkinDocEvent.uri, line: 128 },
-                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
-                    }
-                ]
-            })
+            loadGherkin(eventBroadcaster)
+            acceptPickle(eventBroadcaster)
+            prepareSuite(eventBroadcaster)
+            startSuite(eventBroadcaster)
             send.reset()
 
             eventBroadcaster.emit('test-step-finished', {
@@ -266,24 +245,10 @@ describe('cucumber reporter', () => {
         })
 
         it('should send proper data on failing `test-step-finished` event with exception', () => {
-            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
-            eventBroadcaster.emit('test-case-prepared', {
-                sourceLocation: { uri: gherkinDocEvent.uri, line: 126 },
-                steps: [
-                    {
-                        sourceLocation: { uri: gherkinDocEvent.uri, line: 125 },
-                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
-                    },
-                    {
-                        sourceLocation: { uri: gherkinDocEvent.uri, line: 127 },
-                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
-                    },
-                    {
-                        sourceLocation: { uri: gherkinDocEvent.uri, line: 128 },
-                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
-                    }
-                ]
-            })
+            loadGherkin(eventBroadcaster)
+            acceptPickle(eventBroadcaster)
+            prepareSuite(eventBroadcaster)
+            startSuite(eventBroadcaster)
             send.reset()
 
             eventBroadcaster.emit('test-step-finished', {
@@ -315,24 +280,10 @@ describe('cucumber reporter', () => {
         })
 
         it('should send proper data on failing `test-step-finished` event with string error', () => {
-            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
-            eventBroadcaster.emit('test-case-prepared', {
-                sourceLocation: { uri: gherkinDocEvent.uri, line: 126 },
-                steps: [
-                    {
-                        sourceLocation: { uri: gherkinDocEvent.uri, line: 125 },
-                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
-                    },
-                    {
-                        sourceLocation: { uri: gherkinDocEvent.uri, line: 127 },
-                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
-                    },
-                    {
-                        sourceLocation: { uri: gherkinDocEvent.uri, line: 128 },
-                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
-                    }
-                ]
-            })
+            loadGherkin(eventBroadcaster)
+            acceptPickle(eventBroadcaster)
+            prepareSuite(eventBroadcaster)
+            startSuite(eventBroadcaster)
             send.reset()
 
             eventBroadcaster.emit('test-step-finished', {
@@ -364,24 +315,10 @@ describe('cucumber reporter', () => {
         })
 
         it('should send proper data on ambiguous `test-step-finished` event', () => {
-            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
-            eventBroadcaster.emit('test-case-prepared', {
-                sourceLocation: { uri: gherkinDocEvent.uri, line: 126 },
-                steps: [
-                    {
-                        sourceLocation: { uri: gherkinDocEvent.uri, line: 125 },
-                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
-                    },
-                    {
-                        sourceLocation: { uri: gherkinDocEvent.uri, line: 127 },
-                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
-                    },
-                    {
-                        sourceLocation: { uri: gherkinDocEvent.uri, line: 128 },
-                        actionLocation: { uri: gherkinDocEvent.uri, line: 126 }
-                    }
-                ]
-            })
+            loadGherkin(eventBroadcaster)
+            acceptPickle(eventBroadcaster)
+            prepareSuite(eventBroadcaster)
+            startSuite(eventBroadcaster)
             send.reset()
 
             eventBroadcaster.emit('test-step-finished', {
@@ -413,7 +350,10 @@ describe('cucumber reporter', () => {
         })
 
         it('should send proper data on `test-case-finished` event', () => {
-            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            loadGherkin(eventBroadcaster)
+            acceptPickle(eventBroadcaster)
+            prepareSuite(eventBroadcaster)
+            startSuite(eventBroadcaster)
             send.reset()
 
             eventBroadcaster.emit('test-case-finished', {
@@ -436,7 +376,10 @@ describe('cucumber reporter', () => {
         })
 
         it('should send proper data on `test-run-finished` event', () => {
-            eventBroadcaster.emit('gherkin-document', gherkinDocEvent)
+            loadGherkin(eventBroadcaster)
+            acceptPickle(eventBroadcaster)
+            prepareSuite(eventBroadcaster)
+            startSuite(eventBroadcaster)
             send.reset()
 
             eventBroadcaster.emit('test-run-finished', {
@@ -460,12 +403,14 @@ describe('cucumber reporter', () => {
     })
 
     describe('make sure all commands are sent properly', () => {
-        // TODO this spec is not isolated and requires other specs above to run in advance
+        const reporter = new CucumberReporter(new EventEmitter(), { failAmbiguousDefinitions: true }, '0-1', ['/foobar.js'])
+
+        reporter.send = (_0, _1, _2, callback) => setTimeout(callback, 500)
+
         it('should wait until all events were sent', () => {
             const start = (new Date()).getTime()
-            setTimeout(() => {
-                send.args.forEach((arg) => arg[3]())
-            }, 500)
+
+            reporter.emit({}, {})
 
             return reporter.waitUntilSettled().then(() => {
                 const end = (new Date()).getTime();
@@ -475,13 +420,84 @@ describe('cucumber reporter', () => {
     })
 
     describe('provides a fail counter', () => {
-        it('should have right fail count at the end', () => {
-            reporter.failedCount.should.be.exactly(3)
+        let eventBroadcaster
+        let reporter
+
+        beforeEach(() => {
+            eventBroadcaster = new EventEmitter()
+            reporter = new CucumberReporter(eventBroadcaster, { failAmbiguousDefinitions: true, ignoreUndefinedDefinitions: false }, '0-1', ['/foobar.js'])
+            reporter.send = () => {}
+        })
+
+        it('should increment failed counter on `failed` status', () => {
+            loadGherkin(eventBroadcaster)
+            acceptPickle(eventBroadcaster)
+            prepareSuite(eventBroadcaster)
+            startSuite(eventBroadcaster)
+
+            eventBroadcaster.emit('test-step-finished', {
+                index: 2,
+                result: {
+                    duration: 10,
+                    status: 'failed',
+                    exception: new Error('exception-error')
+                },
+                testCase: {
+                    sourceLocation: { uri: gherkinDocEvent.uri, line: 126 }
+                }
+            })
+            reporter.failedCount.should.be.exactly(1)
+        })
+
+        it('should increment failed counter on `ambiguous` status', () => {
+            loadGherkin(eventBroadcaster)
+            acceptPickle(eventBroadcaster)
+            prepareSuite(eventBroadcaster)
+            startSuite(eventBroadcaster)
+
+            eventBroadcaster.emit('test-step-finished', {
+                index: 2,
+                result: {
+                    duration: 10,
+                    status: 'ambiguous',
+                    exception: 'cucumber-ambiguous-error-message'
+                },
+                testCase: {
+                    sourceLocation: { uri: gherkinDocEvent.uri, line: 126 }
+                }
+            })
+
+            reporter.failedCount.should.be.exactly(1)
+        })
+
+        it('should increment failed counter on `undefined` status', () => {
+            loadGherkin(eventBroadcaster)
+            acceptPickle(eventBroadcaster)
+            prepareSuite(eventBroadcaster)
+            startSuite(eventBroadcaster)
+
+            eventBroadcaster.emit('test-step-finished', {
+                index: 2,
+                result: {
+                    duration: 10,
+                    status: 'undefined'
+                },
+                testCase: {
+                    sourceLocation: { uri: gherkinDocEvent.uri, line: 126 }
+                }
+            })
+
+            reporter.failedCount.should.be.exactly(1)
         })
     })
 
     describe('tags in title', () => {
+        let eventBroadcaster
+        let reporter
+        let send
+
         before(() => {
+            eventBroadcaster = new EventEmitter()
             reporter = new CucumberReporter(eventBroadcaster, {
                 tagsInTitle: true
             }, '0-1', ['/foobar.js'])
