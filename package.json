@@ -44,7 +44,7 @@
     "glob": "^7.1.2",
     "is-glob": "^4.0.0",
     "mockery": "~2.1.0",
-    "wdio-sync": "0.7.2"
+    "wdio-sync": "0.7.3"
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",
