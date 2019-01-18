@@ -57,7 +57,9 @@ Require files with the given EXTENSION after requiring MODULE.
 
 Type: `String[]`<br>
 Default: `*[]*`<br>
-Example: `['js:babel-core/register']`
+Example: `['js:babel-core/register']`<br>
+To passe options to the compiler use `[[String, options]]`<br>
+Example: `[ ['js:babel-register', { ignore: [] }] ]`
 
 ### failAmbiguousDefinitions
 **Please note that this is a wdio-cucumber-framework specific option and not recognized by cucumber-js itself**

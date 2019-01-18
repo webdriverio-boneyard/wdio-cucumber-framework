@@ -1,12 +1,6 @@
 const path = require('path')
 const { CucumberAdapter } = require('../build/adapter')
 
-const conf = {
-    cucumberOpts: {
-        compiler: [],
-        require: [path.join(__dirname, '/fixtures/es6-definition.js')]
-    }
-}
 const feature = ['./test/fixtures/es6.feature']
 
 const NOOP = function () {}
@@ -27,6 +21,15 @@ WebdriverIO.prototype = {
 process.send = NOOP
 
 describe('adapter', function () {
+    let conf
+    beforeEach(() => {
+        conf = {
+            cucumberOpts: {
+                compiler: [],
+                require: [path.join(__dirname, '/fixtures/es6-definition.js')]
+            }
+        }
+    })
     describe('should use the compiler as defined in the options', function () {
         /**
          * Do not change the order of the specs
@@ -46,6 +49,17 @@ describe('adapter', function () {
 
         it('should run if the compiler is defined', function () {
             conf.cucumberOpts.compiler.push('js:babel-register')
+
+            global.browser = new WebdriverIO()
+            global.browser.options = {}
+            const adapter = new CucumberAdapter(0, conf, feature, {})
+            global.browser.getPrototype = function () { return WebdriverIO.prototype }
+            return adapter.run().then((res) => {
+                res.should.equal(0, 'test ok!')
+            })
+        })
+        it('should run if the compiler is defined with options', function () {
+            conf.cucumberOpts.compiler.push(['js:babel-register', { ignore: ['node_modules'] }])
 
             global.browser = new WebdriverIO()
             global.browser.options = {}
