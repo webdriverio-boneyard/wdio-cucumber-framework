@@ -70,4 +70,17 @@ describe('adapter', function () {
             })
         })
     })
+    describe('should run passed spec files', function () {
+        it('should allow to specify a scenario by its line number', function () {
+            conf.cucumberOpts.compiler.push('js:babel-register')
+
+            global.browser = new WebdriverIO()
+            global.browser.options = {}
+            const adapter = new CucumberAdapter(0, conf, ['./test/fixtures/es6.feature:6'], {})
+            global.browser.getPrototype = function () { return WebdriverIO.prototype }
+            return adapter.run().then((res) => {
+                res.should.equal(0, 'test ok!')
+            })
+        })
+    })
 })
